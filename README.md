@@ -6,7 +6,7 @@ SaaSProjectHunter is the solution for easily searching projects/companies/users 
  
 1. Clone the repository:
 ```
-git clone https://github.com/Onsec-io/SaaSProjectHunter
+git clone https://github.com/Onsec-io/SaaSProjectHunter.git
 ```
  
 2. Install the required packages:
