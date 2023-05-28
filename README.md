@@ -81,6 +81,7 @@ GithubUsers      https://github.com/google
 - [x] GitLab (Users, Groups)
 - [x] Github (Users, Search)
 - [x] Github Pages (github.io)
+- [x] Github Gist (gist.github.com)
 - [x] JIRA
 - [x] Kayako
 - [x] Postman (Users, Search)
