@@ -74,7 +74,6 @@ def random_endpoint():
         's3-website.ap-south-2.amazonaws.com',
         's3-website.ap-southeast-3.amazonaws.com',
         's3-website.ca-central-1.amazonaws.com',
-        's3-website.cn-northwest-1.amazonaws.com',
         's3-website.eu-central-1.amazonaws.com',
         's3-website.eu-central-2.amazonaws.com',
         's3-website.eu-north-1.amazonaws.com',
