@@ -87,6 +87,7 @@ GithubUsers      https://github.com/google
 - [x] Postman (Users, Search)
 - [x] ReadTheDocs
 - [x] Salesforce
+- [x] ScalewayS3 (Scaleway Object Storage)
 - [x] Slack
 - [x] SwaggerHub (Users, Query)
 - [x] Tilda
