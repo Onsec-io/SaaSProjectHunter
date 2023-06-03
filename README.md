@@ -86,6 +86,7 @@ GithubUsers      https://github.com/google
 - [x] Kayako
 - [x] Postman (Users, Search)
 - [x] ReadTheDocs
+- [x] Salesforce
 - [x] Slack
 - [x] SwaggerHub (Users, Query)
 - [x] Tilda
@@ -98,9 +99,10 @@ GithubUsers      https://github.com/google
  
 We welcome contributions from the community. If you want to contribute, please fork the repository and submit a pull request with your changes.
  
-Please, try to avoid making changes to the project outside of the `modules` folder. To create a task for websites queries, you can use one of two asynchronous functions:
+Please, refrain from making any modifications outside of the `modules` folder in the project. You can utilize three asynchronous functions to create tasks for target queries:
 - `async_requests(urls)` - a simple function that polls the URLs from the given list and returns a list of responses from the services;
-- `async_requests_over_datasets(datasets)` - where `datasets` is a dictionary where the key is the `UUID` of the request and the value is `the request parameters`. An example structure of `datasets` is: `{'UNIQUE-UUID': {'url': 'https://<company>.example.com/<project>', 'method': 'post', 'cookies': "{'key': 'value'}"}}`. This function returns a two-dimensional array consisting of the UUID of the original request and the response to the request.
+- `async_requests_over_datasets(datasets)` - where `datasets` is a dictionary where the key is the `UUID` of the request and the value is `the request parameters`. An example structure of `datasets` is: `{'UNIQUE-UUID': {'url': 'https://<company>.example.com/<project>', 'method': 'post', 'cookies': "{'key': 'value'}"}}`. This function returns a two-dimensional array consisting of the UUID of the original request and the response to the request;
+- `async_nslookup(domains)` - this function performs DNS lookups for a list of domains. It will return a simple list of domains for which an A record was successfully obtained.
  
  
 ## License

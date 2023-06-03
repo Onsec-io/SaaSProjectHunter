@@ -1,6 +1,7 @@
 from progressbar import progressbar
 import asyncio
 import httpx
+import aiodns
 import re
 import logger
 log = logger.get_logger('logger')
@@ -56,6 +57,33 @@ def generator(words):
     blacklist = ['http', 'https', 'www', 'com', 'net', 'org', 'edu', 'gov', 'mil', 'int', 'arpa', 'co.uk']
     result = [x for x in result if x not in blacklist]
     return result
+
+
+async def make_nslookup(resolver, domain):
+    async with limit:
+        if limit.locked():
+            await asyncio.sleep(0.1)
+        log.debug('Run lookup: {}'.format(domain))
+        try:
+            log.debug('Run resolve domain: {}'.format(domain))
+            result = await resolver.query(domain, 'A')
+            if result:
+                return domain
+            else:
+                return None
+        except Exception as e:
+            log.debug('Error lookup {}: {}'.format(domain, e))
+            return None
+
+
+async def async_nslookup(domains):
+    resolver = aiodns.DNSResolver()
+    tasks = []
+    for domain in domains:
+        task = asyncio.create_task(make_nslookup(resolver, domain))
+        tasks.append(task)
+    responses = await asyncio.gather(*tasks)
+    return responses
 
 
 async def make_request(client, url, method, uuid=None, data=None, headers=None, cookies=None):
@@ -153,7 +181,7 @@ async def async_requests_over_datasets(datasets, http2=True):
     return completed_responses
 
 
-def compile_subdomain(url, words, proto='https'):
+def compile_subdomain(url, words, proto='https://'):
     words = [item.lower() for item in words]  # lowercase
     words = [item.strip() for item in words]  # delete spaces\newline
     words = list(set(words))  # remove doubles
@@ -165,15 +193,15 @@ def compile_subdomain(url, words, proto='https'):
             log.debug('Deleted {}'.format(s))
     words = temp
     log.debug('Size of wordlist: {}'.format(len(words)))
-    urls = ['{}://{}.{}'.format(proto, w, url) for w in words]
+    urls = ['{}{}.{}'.format(proto, w, url) for w in words]
     return urls
 
 
-def compile_url(url, paths, proto='https'):
+def compile_url(url, paths, proto='https://'):
     paths = [item.strip() for item in paths]  # delete spaces\newline
     paths = list(set(paths))  # remove doubles
     log.debug('Size of wordlist: {}'.format(len(paths)))
-    urls = ['{}://{}{}'.format(proto, url, p) for p in paths]
+    urls = ['{}{}{}'.format(proto, url, p) for p in paths]
     return urls
 
 

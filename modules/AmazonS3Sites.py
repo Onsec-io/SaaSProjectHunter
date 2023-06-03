@@ -29,7 +29,7 @@ def run(words):
     log.debug('Checking the wordlist for requirements of {} module...'.format(get_name()))
     words = [item.lower() for item in words]  # lowercase
     endpoint = random_endpoint()
-    urls = compile_subdomain(endpoint, words, proto='http')
+    urls = compile_subdomain(endpoint, words, proto='http://')
     log.debug('Run requests...')
     loop = asyncio.get_event_loop()
     responses = loop.run_until_complete(async_requests(urls, method='get'))
