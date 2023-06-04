@@ -107,6 +107,7 @@ async def make_request(client, url, method, uuid=None, data=None, headers=None, 
         except (httpx.ConnectError, httpx.ConnectTimeout, httpx.ReadTimeout):
             log.error('Error connect to {}...'.format(url))
             return [uuid, url]
+        log.debug('Response status: {} ({})'.format(r.status_code, url))
         return [uuid, r]
 
 

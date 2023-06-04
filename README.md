@@ -82,12 +82,13 @@ GithubUsers      https://github.com/google
 - [x] Github (Users, Search)
 - [x] Github Pages (github.io)
 - [x] Github Gist (gist.github.com)
+- [x] Google Cloud Storage Buckets
 - [x] JIRA
 - [x] Kayako
 - [x] Postman (Users, Search)
 - [x] ReadTheDocs
 - [x] Salesforce
-- [x] ScalewayS3 (Scaleway Object Storage)
+- [x] Scaleway Object Storage
 - [x] Slack
 - [x] SwaggerHub (Users, Query)
 - [x] Tilda
