@@ -206,36 +206,45 @@ def compile_url(url, paths, proto='https://'):
     return urls
 
 
-def run_check_module(m):
-    print('Check module {} v{}: '.format(m.get_name(), m.get_version()), end='')
-    d = m.wordslist_for_check_module()
-    n = 0
-    log.debug('>> Test set: {}'.format(d))
+def run_check_module(module):
+    print('Check module {} v{}: '.format(module.get_name(), module.get_version()), end='')
+    data = module.wordslist_for_check_module()
+    count = 0
+    log.debug('>> Test set: {}'.format(data))
 
     # Check fake/pseudo projects
-    fake = d['fake']
-    log.info('>> Check fake project name: {}'.format(fake))
-    r = m.run(fake)
-    if len(r) == 0:
+    fake_projects = data['fake']
+    log.info('>> Check fake project name: {}'.format(fake_projects))
+    result = module.run(fake_projects)
+    if len(result) == 0:
         log.info('>> Pseudo projects not found')
-        n += 1
+        count += 1
     else:
-        log.warning('Test {} fail. Found pseudo projects: {}'.format(m.get_name(), [x for x in r]))
+        log.warning('Test {} failed. Found pseudo projects: {}'.format(module.get_name(), [x for x in result]))
 
     # Check real projects
-    real = d['real']
-    log.info('>> Check real project name ({}): {}'.format(len(real), real))
-    r = m.run(real)
-    if len(r) >= len(real):
-        log.info('>> All real projects found')
-        n += 1
+    real_projects = data['real']
+    log.info('>> Check real project name ({}): {}'.format(len(real_projects), real_projects))
+    result = module.run(real_projects)
+    if len(result) >= len(real_projects):
+        found_projects = set()
+        for source_str in result:
+            for check_str in real_projects:
+                if check_str.lower() in source_str.lower():
+                    found_projects.add(check_str)
+        if len(found_projects) == len(real_projects):
+            log.info('>> All real projects found')
+            count += 1
+        else:
+            log.warning('Test {} failed. Found only: {}'.format(module.get_name(), [x for x in real_projects]))
+            log.debug('List of responses URL: {}'.format(result))
     else:
-        log.warning('Test {} fail. Found only {} out of {} projects: {}'.format(m.get_name(), len(r), len(real), [x for x in r]))
+        log.warning('Test {} failed. Found only {} out of {} projects: {}'.format(module.get_name(), len(result), len(real_projects), [x for x in result]))
 
-    if n == 2:
-        print('complete, problem not found, all ok!'.format(m.get_name(), m.get_version()))
+    if count == 2:
+        print('complete, problem not found, all ok!'.format(module.get_name(), module.get_version()))
     else:
-        log.error('Failed check module {} v{}!'.format(m.get_name(), m.get_version()))
+        log.error('Failed check module {} v{}!'.format(module.get_name(), module.get_version()))
 
 
 def check_modules(modules, module_name, verbose):
