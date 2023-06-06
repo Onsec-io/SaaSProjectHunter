@@ -76,6 +76,7 @@ GithubUsers      https://github.com/google
 - [x] Atlassian
 - [x] Bitbucket (Users/Company)
 - [x] Deskpro
+- [x] DigitalOcean Spaces Object Storage
 - [x] DockerHub (Users, Search)
 - [x] GetOutline
 - [x] GitLab (Users, Groups)
