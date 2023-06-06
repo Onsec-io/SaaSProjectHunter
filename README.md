@@ -85,6 +85,7 @@ GithubUsers      https://github.com/google
 - [x] Google Cloud Storage Buckets
 - [x] JIRA
 - [x] Kayako
+- [x] Linode Object Storage
 - [x] OVH Cloud Object Storage
 - [x] Postman (Users, Search)
 - [x] ReadTheDocs
