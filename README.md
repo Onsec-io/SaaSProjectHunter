@@ -72,6 +72,7 @@ GithubUsers      https://github.com/google
 ```
  
 ## List of modules
+- [x] Alibaba Cloud Object Storage
 - [x] AWS S3 (Bucket, Website)
 - [x] Atlassian
 - [x] Bitbucket (Users/Company)
@@ -95,6 +96,7 @@ GithubUsers      https://github.com/google
 - [x] Slack
 - [x] SwaggerHub (Users, Query)
 - [x] Tilda
+- [x] Vultr Object Storage
 - [x] Youtrack
 - [x] Zendesk
 - [x] Zoho (Desk, Wiki)
