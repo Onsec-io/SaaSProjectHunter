@@ -9,7 +9,7 @@ def get_name():
 
 
 def get_version():
-    return '1.0'
+    return '1.1'
 
 
 def get_description():
@@ -43,6 +43,6 @@ def run(words):
     log.debug('Run requests...')
     loop = asyncio.get_event_loop()
     responses = loop.run_until_complete(async_requests(urls))
-    founded_projects = [str(r.url) for r in responses if r.status_code != 404]
+    founded_projects = [str(r.url) for r in responses if r.status_code != 404 and r.status_code != 502]
     log.info('{}: founded {} sites'.format(get_name(), len(founded_projects)))
     return founded_projects
