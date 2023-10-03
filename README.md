@@ -72,8 +72,8 @@ GithubUsers      https://github.com/google
 ```
  
 ## List of modules
-- [x] Alibaba Cloud Object Storage
 - [x] AWS S3 (Bucket, Website)
+- [x] Alibaba Cloud Object Storage
 - [x] Atlassian
 - [x] Bitbucket (Users/Company)
 - [x] Deskpro
@@ -82,8 +82,8 @@ GithubUsers      https://github.com/google
 - [x] GetOutline
 - [x] GitLab (Users, Groups)
 - [x] Github (Users, Search)
-- [x] Github Pages (github.io)
 - [x] Github Gist (gist.github.com)
+- [x] Github Pages (github.io)
 - [x] Google Cloud Storage Buckets
 - [x] JIRA
 - [x] Kayako
@@ -93,6 +93,7 @@ GithubUsers      https://github.com/google
 - [x] ReadTheDocs
 - [x] Salesforce
 - [x] Scaleway Object Storage
+- [x] SearchCode
 - [x] Slack
 - [x] SwaggerHub (Users, Query)
 - [x] Tilda
