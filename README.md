@@ -101,6 +101,7 @@ GithubUsers      https://github.com/google
 - [x] Youtrack
 - [x] Zendesk
 - [x] Zoho (Desk, Wiki)
+- [x] Azure (Cloud, Container, BLOB, etc)
  
  
 ## Contributing
