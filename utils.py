@@ -23,11 +23,13 @@ def set_useragent(useragent):
 
 def wait_user_input():
     while True:
-        answer = input("\nPress 'y' to repeat requests, or 'n' to exit: ")
-        if answer == 'y':
+        answer = input("\nPress 'r' to repeat requests, 'p' to pass current module or 'e' to exit: ")
+        if answer == 'r':
             break
-        elif answer == 'n':
+        elif answer == 'e':
             exit()
+        elif answer == 'p':
+            return 'pass'
 
 
 def generator(words):
@@ -134,8 +136,8 @@ async def async_requests(urls, method='head', http2=True, additional_headers=Non
             completed_responses.append(r)
 
     if len(recheck) > 0:
-        wait_user_input()
-        recheck_responses = await async_requests(recheck, method=method, http2=http2, additional_headers=additional_headers)
+        if wait_user_input() != 'pass':
+            recheck_responses = await async_requests(recheck, method=method, http2=http2, additional_headers=additional_headers)
 
     completed_responses.extend(recheck_responses)
     return completed_responses
@@ -175,8 +177,8 @@ async def async_requests_over_datasets(datasets, http2=True):
             completed_responses.append([uuid, r])
 
     if len(recheck) > 0:
-        wait_user_input()
-        recheck_responses = await async_requests_over_datasets(recheck, http2=http2)
+        if wait_user_input() != 'pass':
+            recheck_responses = await async_requests_over_datasets(recheck, http2=http2)
 
     completed_responses.extend(recheck_responses)
     return completed_responses

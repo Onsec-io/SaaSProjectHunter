@@ -7,14 +7,14 @@ from utils import check_modules, set_threads_limit, set_useragent, generator
 from progressbar import progressbar
 
 
-def load_wordlist():
+def load_wordlist(path_to_file):
     words = []
-    if args.wordlist:
-        log.debug('Reading {}...'.format(args.wordlist))
-        if not os.path.exists(args.wordlist) or not os.path.isfile(args.wordlist):
+    if path_to_file:
+        log.debug('Reading {}...'.format(path_to_file))
+        if not os.path.exists(path_to_file) or not os.path.isfile(path_to_file):
             log.error('Please, check your input file!')
             exit()
-        with open(args.wordlist, 'r') as f:
+        with open(path_to_file, 'r') as f:
             words = f.read().splitlines()
     elif args.strings:
         log.debug('Read list of strings from user input: {}'.format(args.strings))
@@ -67,8 +67,19 @@ def main():
         exit()
 
     log.debug('Loading wordlist...')
-    words = load_wordlist()
+    words = load_wordlist(args.wordlist)
     log.info('Number of lines: {}'.format(len(words)))
+
+    if args.postfix:
+        log.info('Loading postfix...')
+        postfixlist = load_wordlist(args.postfix)
+        result = []
+        for w in words:
+            result.append(w)
+            for p in postfixlist:
+                result.append(w + p)
+        words = result
+        log.info('Number of lines in postfix file and new size of wordlist: {} - {}'.format(len(postfixlist), len(words)))
 
     log.debug('Loading modules...')
     modules = load_modules()
@@ -97,6 +108,7 @@ parser.add_argument('-t', '--threads', default=int(os.cpu_count())*2, help='numb
 parser.add_argument('-u', '--user-agent', default='Mozilla/5.0 (X11; Linux x86_64; rv:100.0) Gecko/20100101 Firefox/100.0', help='set User-Agent to use for requests')
 parser.add_argument('-v', '--verbose', action='count', default=0, help='increase output verbosity (-v, -vv)')
 parser.add_argument('-nc', '--no-color', action='store_true', default=False, help='disable color output')
+parser.add_argument('-p', '--postfix', help='Path to file with postfixes')
 
 args = parser.parse_args()
 log = logger.init_logger(args.verbose, args.no_color)
