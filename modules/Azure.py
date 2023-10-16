@@ -48,12 +48,9 @@ def endpoints():
         'database.windows.net',
         'documents.azure.com',
         'file.core.windows.net',
-        'mail.protection.outlook.com',
         'queue.core.windows.net',
         'redis.cache.windows.net',
         'scm.azurewebsites.net',
-        'search.windows.net',
-        'sharepoint.com',
         'table.core.windows.net',
         'vault.azure.net',
     ]
