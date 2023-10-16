@@ -10,5 +10,5 @@ idna
 rfc3986
 sniffio
 tabulate
-progressbar2
 aiodns
+tqdm

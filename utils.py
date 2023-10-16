@@ -1,24 +1,24 @@
-from progressbar import progressbar
 import asyncio
 import httpx
 import aiodns
+from tqdm.asyncio import tqdm_asyncio
 import re
 import logger
 log = logger.get_logger('logger')
 global limit
 global header_useragent
+global verbose
 
 
-def set_threads_limit(count_threads):
-    log.info('Set limit of threads: {}'.format(count_threads))
+def init(args_verbose, args_threads, args_user_agent):
+    global verbose
+    verbose = args_verbose
+
     global limit
-    limit = asyncio.Semaphore(value=count_threads)
+    limit = asyncio.Semaphore(value=int(args_threads))
 
-
-def set_useragent(useragent):
-    log.debug('Set user-agent: {}'.format(useragent))
     global header_useragent
-    header_useragent = {'user-agent': useragent}
+    header_useragent = {'user-agent': args_user_agent}
 
 
 def wait_user_input():
@@ -84,7 +84,10 @@ async def async_nslookup(domains):
     for domain in domains:
         task = asyncio.create_task(make_nslookup(resolver, domain))
         tasks.append(task)
-    responses = await asyncio.gather(*tasks)
+    if verbose > 0:
+        responses = await asyncio.gather(*tasks)  # return None and response
+    else:
+        responses = await tqdm_asyncio.gather(*tasks, leave=False)  # return None and response
     return responses
 
 
@@ -123,7 +126,10 @@ async def async_requests(urls, method='head', http2=True, additional_headers=Non
     for url in urls:
         task = asyncio.create_task(make_request(client, url, method))
         tasks.append(task)
-    responses = await asyncio.gather(*tasks)  # return None and response
+    if verbose > 0:
+        responses = await asyncio.gather(*tasks)  # return None and response
+    else:
+        responses = await tqdm_asyncio.gather(*tasks, leave=False)  # return None and response
 
     completed_responses = []  # list of successful responses
     recheck = []  # list of url if error (return from `make_request` string)
@@ -168,7 +174,10 @@ async def async_requests_over_datasets(datasets, http2=True):
     completed_responses = []  # list of successful responses
     recheck = {}  # datasets for recheck (added if return from `make_request` [uuid, url])
     recheck_responses = []
-    responses = await asyncio.gather(*tasks)
+    if verbose > 0:
+        responses = await asyncio.gather(*tasks)  # return None and response
+    else:
+        responses = await tqdm_asyncio.gather(*tasks, leave=False)  # return None and response
     for uuid, r in responses:
         if type(r) == str:
             log.debug('Found url for recheck: {}'.format(r))
@@ -209,7 +218,7 @@ def compile_url(url, paths, proto='https://'):
 
 
 def run_check_module(module):
-    print('Check module {} v{}: '.format(module.get_name(), module.get_version()), end='')
+    print('Check {} v{}'.format(module.get_name(), module.get_version()))
     data = module.wordslist_for_check_module()
     count = 0
     log.debug('>> Test set: {}'.format(data))
@@ -244,19 +253,16 @@ def run_check_module(module):
         log.warning('Test {} failed. Found only {} out of {} projects: {}'.format(module.get_name(), len(result), len(real_projects), [x for x in result]))
 
     if count == 2:
-        print('complete, problem not found, all ok!'.format(module.get_name(), module.get_version()))
+        pass
+        # print('Check {} v{} complete, problem not found'.format(module.get_name(), module.get_version()))
     else:
         log.error('Failed check module {} v{}!'.format(module.get_name(), module.get_version()))
 
 
-def check_modules(modules, module_name, verbose):
+def check_modules(modules, module_name):
     if module_name.lower() == 'all':
-        if verbose == 0:
-            for m in progressbar(modules, redirect_stdout=True):
-                run_check_module(m)
-        else:
-            for m in modules:
-                run_check_module(m)
+        for m in modules:
+            run_check_module(m)
     else:
         for m in modules:
             if m.get_name().lower() == module_name.lower():

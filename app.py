@@ -3,8 +3,7 @@ import os
 import importlib
 import logger
 from tabulate import tabulate
-from utils import check_modules, set_threads_limit, set_useragent, generator
-from progressbar import progressbar
+import utils
 
 
 def load_wordlist(path_to_file):
@@ -57,13 +56,13 @@ def main():
         exit()
 
     if args.generator:
-        result = generator(args.generator)
+        result = utils.generator(args.generator)
         print(' '.join(result))
         exit()
 
     if args.check_modules:
         log.info('Check modules...')
-        check_modules(load_modules(), args.check_modules, args.verbose)
+        utils.check_modules(load_modules(), args.check_modules)
         exit()
 
     log.debug('Loading wordlist...')
@@ -86,14 +85,10 @@ def main():
     log.info('Number of loaded modules: {}'.format(len(modules)))
 
     output = []
-    if args.verbose == 0:
-        for module in progressbar(modules, redirect_stdout=True):
-            for url in module.run(words):
-                output.append([module.get_name(), url])
-    else:
-        for module in modules:
-            for url in module.run(words):
-                output.append([module.get_name(), url])
+    for module in modules:
+        print('Run {}'.format(module.get_name()))
+        for url in module.run(words):
+            output.append([module.get_name(), url])
     print(tabulate(output))
 
 
@@ -105,15 +100,15 @@ group.add_argument('-w', '--wordlist', help='wordlist file path')
 group.add_argument('-s', '--strings', help='or list of string over space', nargs='+')
 group.add_argument('-g', '--generator', help='run a generator for a list of input strings and exit', nargs='+')
 parser.add_argument('-t', '--threads', default=int(os.cpu_count())*2, help='number of concurrent threads. If not specified, the number of threads will be equal to the number of CPUs*2')
-parser.add_argument('-u', '--user-agent', default='Mozilla/5.0 (X11; Linux x86_64; rv:100.0) Gecko/20100101 Firefox/100.0', help='set User-Agent to use for requests')
-parser.add_argument('-v', '--verbose', action='count', default=0, help='increase output verbosity (-v, -vv)')
+parser.add_argument('-u', '--user-agent', default='Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/118.0', help='set User-Agent to use for requests')
+parser.add_argument('-v', '--verbose', default=0, action='count', help='increase output verbosity (-v, -vv)')
 parser.add_argument('-nc', '--no-color', action='store_true', default=False, help='disable color output')
 parser.add_argument('-p', '--postfix', help='Path to file with postfixes')
 
+
 args = parser.parse_args()
 log = logger.init_logger(args.verbose, args.no_color)
-set_threads_limit(int(args.threads))
-set_useragent(str(args.user_agent))
+utils.init(args.verbose, args.threads, args.user_agent)
 
 if __name__ == "__main__":
     main()
