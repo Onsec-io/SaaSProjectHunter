@@ -61,10 +61,13 @@ def run(words):
     responses = loop.run_until_complete(async_requests_over_datasets(datasets, http2=True))
     founded_projects = []
     for uuid, r in responses:
-        if 'correctedQueryText' in r.json()['meta'].keys():
-            if str(r.json()['meta']['correctedQueryText']).lower() == str(datasets[uuid]['word']).lower() and len(r.json()['data']) > 0:
+        try:
+            if 'correctedQueryText' in r.json()['meta'].keys():
+                if str(r.json()['meta']['correctedQueryText']).lower() == str(datasets[uuid]['word']).lower() and len(r.json()['data']) > 0:
+                    founded_projects.append('https://www.postman.com/search?q={}'.format(str(datasets[uuid]['word']).lower()))
+            elif len(r.json()['data']) > 0:
                 founded_projects.append('https://www.postman.com/search?q={}'.format(str(datasets[uuid]['word']).lower()))
-        elif len(r.json()['data']) > 0:
-            founded_projects.append('https://www.postman.com/search?q={}'.format(str(datasets[uuid]['word']).lower()))
+        except KeyError:
+            log.warn('KeyError: {}. Response: {}'.format(datasets[uuid]['word'], r.status_code))
     log.info('{}: founded {} sites'.format(get_name(), len(founded_projects)))
     return founded_projects
