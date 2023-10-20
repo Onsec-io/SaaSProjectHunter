@@ -127,7 +127,7 @@ async def make_request(client, url, method, uuid=None, data=None, headers=None, 
     except asyncio.CancelledError:
         log.debug('Cancelled request to: {}'.format(url))
         return [uuid, url]
-    except (httpx.ConnectError, httpx.ConnectTimeout, httpx.ReadTimeout, httpx.ReadError):
+    except (httpx.ConnectError, httpx.ConnectTimeout, httpx.ReadTimeout, httpx.ReadError, httpx.LocalProtocolError, httpx.RemoteProtocolError):
         log.error('Error connect to {}...'.format(url))
         return [uuid, url]
 
