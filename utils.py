@@ -4,6 +4,7 @@ import aiodns
 from tqdm.asyncio import tqdm_asyncio
 import re
 import logger
+import signal
 log = logger.get_logger('logger')
 global limit
 global header_useragent
@@ -62,20 +63,23 @@ def generator(words):
 
 
 async def make_nslookup(resolver, domain):
-    async with limit:
-        if limit.locked():
-            await asyncio.sleep(0.1)
-        log.debug('Run lookup: {}'.format(domain))
-        try:
+    try:
+        async with limit:
+            if limit.locked():
+                await asyncio.sleep(0.1)
+            log.debug('Run lookup: {}'.format(domain))
             log.debug('Run resolve domain: {}'.format(domain))
             result = await resolver.query(domain, 'A')
             if result:
                 return domain
             else:
                 return None
-        except Exception as e:
-            log.debug('Error lookup {}: {}'.format(domain, e))
-            return None
+    except asyncio.CancelledError:
+        log.debug('Cancelled lookup: {}'.format(domain))
+        return None
+    except Exception as e:
+        log.debug('Error lookup {}: {}'.format(domain, e))
+        return None
 
 
 async def async_nslookup(domains):
@@ -84,6 +88,14 @@ async def async_nslookup(domains):
     for domain in domains:
         task = asyncio.create_task(make_nslookup(resolver, domain))
         tasks.append(task)
+
+    def signal_handler(sig, frame):
+        log.warning('Current running module has been cancelled')
+        for current_task in tasks:
+            current_task.cancel()
+
+    signal.signal(signal.SIGINT, signal_handler)
+
     if verbose > 0:
         responses = await asyncio.gather(*tasks)  # return None and response
     else:
@@ -92,28 +104,32 @@ async def async_nslookup(domains):
 
 
 async def make_request(client, url, method, uuid=None, data=None, headers=None, cookies=None):
-    async with limit:
-        response = []
-        response.insert(0, uuid)
-        if limit.locked():
-            await asyncio.sleep(0.1)
-        if data:
-            log.debug('Run request to: {} ({})'.format(url, data))
-        else:
-            log.debug('Run request to: {}'.format(url))
-        method = method.lower()
-        try:
+    try:
+        async with limit:
+            response = []
+            response.insert(0, uuid)
+            if limit.locked():
+                await asyncio.sleep(0.1)
+            if data:
+                log.debug('Run request to: {} ({})'.format(url, data))
+            else:
+                log.debug('Run request to: {}'.format(url))
+            method = method.lower()
             if method == 'head':
                 r = await client.head(url, headers=headers, cookies=cookies)
             elif method == 'post':
                 r = await client.post(url, data=data, headers=headers, cookies=cookies)
             else:
                 r = await client.get(url, headers=headers, cookies=cookies)
-        except (httpx.ConnectError, httpx.ConnectTimeout, httpx.ReadTimeout):
-            log.error('Error connect to {}...'.format(url))
-            return [uuid, url]
-        log.debug('Response status: {} ({})'.format(r.status_code, url))
-        return [uuid, r]
+
+            log.debug('Response status: {} ({})'.format(r.status_code, url))
+            return [uuid, r]
+    except asyncio.CancelledError:
+        log.debug('Cancelled request to: {}'.format(url))
+        return [uuid, url]
+    except (httpx.ConnectError, httpx.ConnectTimeout, httpx.ReadTimeout, httpx.ReadError):
+        log.error('Error connect to {}...'.format(url))
+        return [uuid, url]
 
 
 async def async_requests(urls, method='head', http2=True, additional_headers=None):
@@ -126,6 +142,14 @@ async def async_requests(urls, method='head', http2=True, additional_headers=Non
     for url in urls:
         task = asyncio.create_task(make_request(client, url, method))
         tasks.append(task)
+
+    def signal_handler(sig, frame):
+        log.warning('Current running module has been cancelled')
+        for current_task in tasks:
+            current_task.cancel()
+
+    signal.signal(signal.SIGINT, signal_handler)
+
     if verbose > 0:
         responses = await asyncio.gather(*tasks)  # return None and response
     else:
@@ -174,6 +198,14 @@ async def async_requests_over_datasets(datasets, http2=True):
     completed_responses = []  # list of successful responses
     recheck = {}  # datasets for recheck (added if return from `make_request` [uuid, url])
     recheck_responses = []
+
+    def signal_handler(sig, frame):
+        log.warning('Current running module has been cancelled')
+        for current_task in tasks:
+            current_task.cancel()
+
+    signal.signal(signal.SIGINT, signal_handler)
+
     if verbose > 0:
         responses = await asyncio.gather(*tasks)  # return None and response
     else:

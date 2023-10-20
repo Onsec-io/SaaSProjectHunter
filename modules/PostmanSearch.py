@@ -11,7 +11,7 @@ def get_name():
 
 
 def get_version():
-    return '1.0'
+    return '1.1'
 
 
 def get_description():

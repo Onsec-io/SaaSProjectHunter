@@ -11,7 +11,7 @@ def get_name():
 
 
 def get_version():
-    return '1.0'
+    return '1.1'
 
 
 def get_description():
@@ -41,6 +41,13 @@ def run(words):
     log.debug('Run requests...')
     loop = asyncio.get_event_loop()
     responses = loop.run_until_complete(async_requests_over_datasets(datasets, http2=True))
-    founded_projects = ['https://www.postman.com/{}'.format(str(r.json()['info']['slug'])) for _, r in responses if r.status_code != 404]
+    # founded_projects = ['https://www.postman.com/{}'.format(str(r.json()['info']['slug'])) for _, r in responses if r.status_code != 404]
+    founded_projects = []
+    for uuid, r in responses:
+        if r.status_code != 404:
+            try:
+                founded_projects.append('https://www.postman.com/{}'.format(str(r.json()['info']['slug'])))
+            except KeyError:
+                log.warn('KeyError: {}. Response: {}'.format(datasets[uuid]['word'], r.status_code))
     log.info('{}: founded {} sites'.format(get_name(), len(founded_projects)))
     return founded_projects
