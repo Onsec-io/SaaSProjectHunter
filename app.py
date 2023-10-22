@@ -99,16 +99,17 @@ group.add_argument('-c', '--check-modules', action='store', type=str, default=Fa
 group.add_argument('-w', '--wordlist', help='wordlist file path')
 group.add_argument('-s', '--strings', help='or list of string over space', nargs='+')
 group.add_argument('-g', '--generator', help='run a generator for a list of input strings and exit', nargs='+')
-parser.add_argument('-t', '--threads', default=int(os.cpu_count())*2, help='number of concurrent threads. If not specified, the number of threads will be equal to the number of CPUs*2')
+parser.add_argument('-t', '--threads', default=int(os.cpu_count())*2, type=int, help='number of concurrent threads. If not specified, the number of threads will be equal to the number of CPUs*2')
 parser.add_argument('-u', '--user-agent', default='Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/118.0', help='set User-Agent to use for requests')
 parser.add_argument('-v', '--verbose', default=0, action='count', help='increase output verbosity (-v, -vv)')
 parser.add_argument('-nc', '--no-color', action='store_true', default=False, help='disable color output')
 parser.add_argument('-p', '--postfix', help='Path to file with postfixes')
+parser.add_argument('--limit', default=2500, type=int, help='limit the number of requests per modules')
 
 
 args = parser.parse_args()
 log = logger.init_logger(args.verbose, args.no_color)
-utils.init(args.verbose, args.threads, args.user_agent)
+utils.init(args.verbose, args.threads, args.user_agent, args.limit)
 
 if __name__ == "__main__":
     main()

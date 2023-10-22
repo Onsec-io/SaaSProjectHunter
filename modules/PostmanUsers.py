@@ -11,7 +11,7 @@ def get_name():
 
 
 def get_version():
-    return '1.1'
+    return '1.2'
 
 
 def get_description():
@@ -48,6 +48,6 @@ def run(words):
             try:
                 founded_projects.append('https://www.postman.com/{}'.format(str(r.json()['info']['slug'])))
             except KeyError:
-                log.warn('KeyError: {}. Response: {}'.format(datasets[uuid]['word'], r.status_code))
+                log.warn('KeyError: {}. Response: {}'.format(datasets[uuid]['data'], r.status_code))
     log.info('{}: founded {} sites'.format(get_name(), len(founded_projects)))
     return founded_projects

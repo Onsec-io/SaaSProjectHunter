@@ -9,9 +9,10 @@ log = logger.get_logger('logger')
 global limit
 global header_useragent
 global verbose
+global limit_requests
 
 
-def init(args_verbose, args_threads, args_user_agent):
+def init(args_verbose, args_threads, args_user_agent, args_limit_requests):
     global verbose
     verbose = args_verbose
 
@@ -20,6 +21,9 @@ def init(args_verbose, args_threads, args_user_agent):
 
     global header_useragent
     header_useragent = {'user-agent': args_user_agent}
+
+    global limit_requests
+    limit_requests = args_limit_requests
 
 
 def wait_user_input():
@@ -85,7 +89,9 @@ async def make_nslookup(resolver, domain):
 async def async_nslookup(domains):
     resolver = aiodns.DNSResolver()
     tasks = []
-    for domain in domains:
+    if len(domains) > limit_requests:
+        log.warning('Count tasks more than limit. Run only first {} requests'.format(limit_requests))
+    for domain in domains[:limit_requests]:
         task = asyncio.create_task(make_nslookup(resolver, domain))
         tasks.append(task)
 
@@ -139,7 +145,9 @@ async def async_requests(urls, method='head', http2=True, additional_headers=Non
         headers = header_useragent
     client = httpx.AsyncClient(http2=http2, headers=headers)
     tasks = []
-    for url in urls:
+    if len(urls) > limit_requests:
+        log.warning('Count tasks more than limit. Run only first {} requests'.format(limit_requests))
+    for url in urls[:limit_requests]:
         task = asyncio.create_task(make_request(client, url, method))
         tasks.append(task)
 
@@ -181,6 +189,13 @@ async def async_requests_over_datasets(datasets, http2=True):
     cookies = None  # example: {'key': 'value'}
     data = None  # example: {'key': 'value'}
     client = httpx.AsyncClient(http2=True)  # usage one async client for reuse sockets
+
+    if len(datasets) > limit_requests:
+        log.warning('Count tasks more than limit. Run only first {} requests'.format(limit_requests))
+        keys_to_keep = list(datasets.keys())[:limit_requests]
+        new_datasets = {key: datasets[key] for key in keys_to_keep}
+        datasets = new_datasets
+
     for uuid in datasets.keys():
         url = datasets[uuid]['url']
         if 'method' in datasets[uuid].keys():
