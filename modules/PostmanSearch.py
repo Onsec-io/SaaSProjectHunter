@@ -11,7 +11,7 @@ def get_name():
 
 
 def get_version():
-    return '1.1'
+    return '1.2'
 
 
 def get_description():
@@ -26,10 +26,12 @@ def wordslist_for_check_module():
 
 
 def run(words):
+    separators = ["-", "_", "."]
+    split_words = [item.lower() for word in words for separator in separators for item in word.split(separator)]
+    words = list(set(split_words))
     # create datasets
     datasets = {}
     for word in words:
-        word = word.lower().strip()
         uuid = uuid4()
         data = dumps({
             "service": "search",

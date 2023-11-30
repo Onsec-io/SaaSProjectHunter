@@ -10,7 +10,7 @@ def get_name():
 
 
 def get_version():
-    return '1.0'
+    return '1.1'
 
 
 def get_description():
@@ -20,14 +20,16 @@ def get_description():
 def wordslist_for_check_module():
     return {
         'real': ['google', 'test', 'umputun'],
-        'fake': ['micrrverv34', 'uenrf348', 'random_search_938jf34']
+        'fake': ['micraaaaaarverv34', 'uenrf348', 'sde2d23A']
     }
 
 
 def run(words):
     founded_projects = []
     log.debug('Checking the wordlist for requirements of {} module...'.format(get_name()))
-    words = list(set([item.lower() for item in words]))  # lowercase and unique
+    separators = ["-", "_", "."]
+    split_words = [item.lower() for word in words for separator in separators for item in word.split(separator)]
+    words = list(set(split_words))
     params = ['/search?q={}'.format(word) for word in words]
     urls = compile_url('gist.github.com', params)
     log.debug('Compiled {} urls for request ({})'.format(len(urls), get_name()))

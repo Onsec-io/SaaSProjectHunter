@@ -19,8 +19,8 @@ def get_description():
 
 def wordslist_for_check_module():
     return {
-        'real': ['google', 'uplatformsolutions', 'umputun'],
-        'fake': ['micrrverv34', 'uenrf348', 'random_search_938jf34']
+        'real': ['google', 'search', 'random'],
+        'fake': ['micrrverv34', 'uenrf348', 'randomsearch938jf34']
     }
 
 
