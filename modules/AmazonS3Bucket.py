@@ -9,7 +9,7 @@ def get_name():
 
 
 def get_version():
-    return '1.1'
+    return '1.2'
 
 
 def get_description():
@@ -45,7 +45,7 @@ def run(words):
             log.info('Found redirect: {} -> {}'.format(r.url, extracted_string))
             founded_projects.append('https://{}/ ({})'.format(extracted_string, 'Redirect found'))
         else:
-            founded_projects.append(r.url)
+            founded_projects.append(str(r.url))
 
     log.info('{}: founded {} sites'.format(get_name(), len(founded_projects)))
     return founded_projects
