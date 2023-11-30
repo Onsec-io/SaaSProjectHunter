@@ -106,7 +106,6 @@ parser.add_argument('-nc', '--no-color', action='store_true', default=False, hel
 parser.add_argument('-p', '--postfix', help='Path to file with postfixes')
 parser.add_argument('--limit', default=2500, type=int, help='limit the number of requests per modules')
 
-
 args = parser.parse_args()
 log = logger.init_logger(args.verbose, args.no_color)
 utils.init(args.verbose, args.threads, args.user_agent, args.limit)

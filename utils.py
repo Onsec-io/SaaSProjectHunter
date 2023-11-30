@@ -28,10 +28,10 @@ def init(args_verbose, args_threads, args_user_agent, args_limit_requests):
 
 def wait_user_input():
     while True:
-        answer = input("\nPress 'r' to repeat requests, 'p' to pass current module or 'e' to exit: ")
+        answer = input("\nPress 'r' to repeat requests, 'p' to pass current module or 'q' to quit: ")
         if answer == 'r':
             break
-        elif answer == 'e':
+        elif answer == 'q':
             exit()
         elif answer == 'p':
             return 'pass'

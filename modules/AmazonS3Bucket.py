@@ -9,7 +9,7 @@ def get_name():
 
 
 def get_version():
-    return '1.0'
+    return '1.1'
 
 
 def get_description():
@@ -24,12 +24,28 @@ def wordslist_for_check_module():
 
 
 def run(words):
+    import re
     log.debug('Checking the wordlist for requirements of {} module...'.format(get_name()))
     words = [item.lower() for item in words]  # lowercase
     urls = compile_url('s3.amazonaws.com/', words)
     log.debug('Run requests...')
     loop = asyncio.get_event_loop()
-    responses = loop.run_until_complete(async_requests(urls))
-    founded_projects = [str(r.url) for r in responses if r.status_code != 404]
+    responses = loop.run_until_complete(async_requests(urls, method='get'))
+
+    founded_projects = []
+    for r in responses:
+        if r.status_code == 404:
+            continue
+        elif r.status_code == 403 and 'Access Denied' in r.text:
+            founded_projects.append('{} ({})'.format(r.url, 'Access Denied'))
+        elif r.status_code == 301:
+            pattern = r"<Endpoint>(.*?)</Endpoint>"
+            match = re.search(pattern, r.text)
+            extracted_string = match.group(1)
+            log.info('Found redirect: {} -> {}'.format(r.url, extracted_string))
+            founded_projects.append('https://{}/ ({})'.format(extracted_string, 'Redirect found'))
+        else:
+            founded_projects.append(r.url)
+
     log.info('{}: founded {} sites'.format(get_name(), len(founded_projects)))
     return founded_projects
