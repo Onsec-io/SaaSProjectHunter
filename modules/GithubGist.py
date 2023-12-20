@@ -10,7 +10,7 @@ def get_name():
 
 
 def get_version():
-    return '1.1'
+    return '1.2'
 
 
 def get_description():
@@ -30,7 +30,7 @@ def run(words):
     separators = ["-", "_", "."]
     split_words = [item.lower() for word in words for separator in separators for item in word.split(separator)]
     words = list(set(split_words))
-    params = ['/search?q={}'.format(word) for word in words]
+    params = ['/search?q="{}"'.format(word) for word in words]
     urls = compile_url('gist.github.com', params)
     log.debug('Compiled {} urls for request ({})'.format(len(urls), get_name()))
     log.debug('Run requests...')
@@ -38,9 +38,9 @@ def run(words):
     responses = loop.run_until_complete(async_requests(urls, method='get'))
     for r in responses:
         if not 'We couldn’t find any gists matching' in r.text:  # Counter--primary in response (html-code)
-            match = re.search(r'q=([^&]+)', str(r.url))  # extract value of param `q` from original URL
+            match = re.search(r'q=%22([^&]+)%22', str(r.url))  # extract value of param `q` from original URL
             if match.group(1) in words:
-                founded_projects.append('https://gist.github.com/search?q={}'.format(match.group(1)))
+                founded_projects.append('https://gist.github.com/search?q=%22{}%22'.format(match.group(1)))
     founded_projects = list(set(founded_projects))
     log.info('{}: founded {} sites'.format(get_name(), len(founded_projects)))
     return founded_projects
