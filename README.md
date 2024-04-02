@@ -76,6 +76,7 @@ GithubUsers      https://github.com/google
 - [x] Alibaba Cloud Object Storage
 - [x] Atlassian
 - [x] Bitbucket (Users/Company)
+- [x] Codeberg
 - [x] Deskpro
 - [x] DigitalOcean Spaces Object Storage
 - [x] DockerHub (Users, Search)
