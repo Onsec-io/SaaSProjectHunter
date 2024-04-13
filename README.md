@@ -92,6 +92,7 @@ GithubUsers      https://github.com/google
 - [x] OVH Cloud Object Storage
 - [x] Postman (Users, Search)
 - [x] ReadTheDocs
+- [x] Recruitee
 - [x] Salesforce
 - [x] Scaleway Object Storage
 - [x] SearchCode
