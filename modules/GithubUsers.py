@@ -29,7 +29,7 @@ def run(words):
     urls = compile_url('github.com/', words)
     log.debug('Run requests...')
     loop = asyncio.get_event_loop()
-    responses = loop.run_until_complete(async_requests(urls))
-    founded_projects = [str(r.url) for r in responses if r.status_code != 404 and r.status_code != 406]
+    responses = loop.run_until_complete(async_requests(urls, method='GET'))
+    founded_projects = [str(r.url) for r in responses if r.status_code != 404 and r.status_code != 406 and r.status_code != 403]
     log.info('{}: founded {} sites'.format(get_name(), len(founded_projects)))
     return founded_projects
