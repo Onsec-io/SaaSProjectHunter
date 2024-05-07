@@ -16,6 +16,8 @@ pip install -r requirements.txt
  
 3. Run the project:
 ```
+python3 app.py --help
+
 usage: app.py [-h] [-l | -c] [-w WORDLIST | -s STRINGS [STRINGS ...]]
               [-g [GENERATOR ...]] [-m MODULE] [-t THREADS] [-u USER_AGENT]
               [-v] [-nc] [-p POSTFIX] [--limit LIMIT]
