@@ -38,32 +38,20 @@ def wait_user_input():
 
 
 def generator(words):
-    words = list(
-        set([x.lower().strip() for x in words if len(x) > 3]))  # locawecase, remove doubles and spaces
-    result = []
-    for w in words:
-        if ' ' in w:
-            if '.' in w:
-                w = w.replace('.', '')
-            result.append(w.replace(' ', ''))
-            result.append(w.replace(' ', '_'))
-            result.append(w.replace(' ', '-'))
-            if len(w.split(' ')[-1]) < 5:  # remove `LTD/corp/etc` from 'Blablabla LTD'
-                result.append(w.split(' ')[0])
+    unique_words = set(word.lower().strip() for word in words if len(word) > 3)
+    result = set()
+    for word in unique_words:
+        parts = re.split(r'[ .]', word)
+        result.update({
+            ''.join(parts),
+            '_'.join(parts),
+            '-'.join(parts)
+        })
+        if len(parts[-1]) < 5:
+            result.add(parts[0])
+    blacklist = {'http', 'https', 'www', 'com', 'net', 'org', 'edu', 'gov', 'mil', 'int', 'arpa', 'co.uk'}
+    return [word for word in result if word not in blacklist]
 
-        elif '.' in w:
-            result.append(w)  # add original
-            result.append(w.split('.')[0])
-            result.append(w.replace('.', '_'))
-            result.append(w.replace('.', ''))
-            result.append(w.replace('.', '-'))
-            result.append(w.replace('.', ''))
-        else:
-            result.append(w)
-    result = list(set(result))
-    blacklist = ['http', 'https', 'www', 'com', 'net', 'org', 'edu', 'gov', 'mil', 'int', 'arpa', 'co.uk']
-    result = [x for x in result if x not in blacklist]
-    return result
 
 
 async def make_nslookup(resolver, domain):
@@ -74,10 +62,7 @@ async def make_nslookup(resolver, domain):
             log.debug('Run lookup: {}'.format(domain))
             log.debug('Run resolve domain: {}'.format(domain))
             result = await resolver.query(domain, 'A')
-            if result:
-                return domain
-            else:
-                return None
+            return domain if result else None
     except asyncio.CancelledError:
         log.debug('Cancelled lookup: {}'.format(domain))
         return None
