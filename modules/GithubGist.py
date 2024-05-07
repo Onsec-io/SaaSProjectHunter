@@ -27,9 +27,7 @@ def wordslist_for_check_module():
 def run(words):
     founded_projects = []
     log.debug('Checking the wordlist for requirements of {} module...'.format(get_name()))
-    separators = ["-", "_", "."]
-    split_words = [item.lower() for word in words for separator in separators for item in word.split(separator)]
-    words = list(set(split_words))
+    words = [item.lower() for item in words]  # lowercase
     params = ['/search?q="{}"'.format(word) for word in words]
     urls = compile_url('gist.github.com', params)
     log.debug('Compiled {} urls for request ({})'.format(len(urls), get_name()))

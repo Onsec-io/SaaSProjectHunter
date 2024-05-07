@@ -26,9 +26,7 @@ def wordslist_for_check_module():
 
 
 def run(words):
-    separators = ["-", "_", "."]
-    split_words = [item.lower() for word in words for separator in separators for item in word.split(separator)]
-    words = list(set(split_words))
+    words = [item.lower() for item in words]  # lowercase
     # create datasets
     datasets = {}
     for word in words:
