@@ -16,25 +16,28 @@ pip install -r requirements.txt
  
 3. Run the project:
 ```
-python app.py --help
-usage: app.py [-h] (-l | -c | -w WORDLIST | -s STRINGS [STRINGS ...] | -g GENERATOR [GENERATOR ...]) [-m MODULE] [-t THREADS] [-u USER_AGENT] [-v] [-nc] [-p POSTFIX] [--limit LIMIT]
+usage: app.py [-h] [-l | -c] [-w WORDLIST | -s STRINGS [STRINGS ...]]
+              [-g [GENERATOR ...]] [-m MODULE] [-t THREADS] [-u USER_AGENT]
+              [-v] [-nc] [-p POSTFIX] [--limit LIMIT]
 
 Example: python3 app.py -s google logstash octocat -v
 
 options:
   -h, --help            show this help message and exit
-  -l, --list            print a list of available modules and exit
+  -l, --list            Print a list of available modules and exit
   -c, --check           Run check modules and exit
   -w WORDLIST, --wordlist WORDLIST
-                        wordlist file path
+                        Wordlist file path
   -s STRINGS [STRINGS ...], --strings STRINGS [STRINGS ...]
-                        or list of string over space
-  -g GENERATOR [GENERATOR ...], --generator GENERATOR [GENERATOR ...]
-                        run a generator for a list of input strings and exit
+                        List of strings over space
+  -g [GENERATOR ...], --generator [GENERATOR ...]
+                        Run a generator over wordlist
   -m MODULE, --module MODULE
                         Specify the name of the module to run/check
   -t THREADS, --threads THREADS
-                        number of concurrent threads. If not specified, the number of threads will be equal to the number of CPUs*2
+                        number of concurrent threads. If not specified, the
+                        number of threads will be equal to the number of
+                        CPUs*2
   -u USER_AGENT, --user-agent USER_AGENT
                         set User-Agent to use for requests
   -v, --verbose         increase output verbosity (-v, -vv)
@@ -61,6 +64,7 @@ An example of how to run the program:
 ```commandline
 python app.py -s google logstash octocat
 python app.py -w wordlist.txt
+python app.py -s google.com -g
 ```
  
 To gain a better understanding of the tool's workings, you can run the tool with the `-v` (`--verbose`) parameter. Running with the `-vv` parameter is only recommended for debugging purposes. A full list of available parameters can be accessed by calling the help using the `-h` (`--help`) option.
