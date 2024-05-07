@@ -17,10 +17,35 @@ pip install -r requirements.txt
 3. Run the project:
 ```
 python app.py --help
+usage: app.py [-h] (-l | -c | -w WORDLIST | -s STRINGS [STRINGS ...] | -g GENERATOR [GENERATOR ...]) [-m MODULE] [-t THREADS] [-u USER_AGENT] [-v] [-nc] [-p POSTFIX] [--limit LIMIT]
+
+Example: python3 app.py -s google logstash octocat -v
+
+options:
+  -h, --help            show this help message and exit
+  -l, --list            print a list of available modules and exit
+  -c, --check           Run check modules and exit
+  -w WORDLIST, --wordlist WORDLIST
+                        wordlist file path
+  -s STRINGS [STRINGS ...], --strings STRINGS [STRINGS ...]
+                        or list of string over space
+  -g GENERATOR [GENERATOR ...], --generator GENERATOR [GENERATOR ...]
+                        run a generator for a list of input strings and exit
+  -m MODULE, --module MODULE
+                        Specify the name of the module to run/check
+  -t THREADS, --threads THREADS
+                        number of concurrent threads. If not specified, the number of threads will be equal to the number of CPUs*2
+  -u USER_AGENT, --user-agent USER_AGENT
+                        set User-Agent to use for requests
+  -v, --verbose         increase output verbosity (-v, -vv)
+  -nc, --no-color       disable color output
+  -p POSTFIX, --postfix POSTFIX
+                        Path to file with postfixes
+  --limit LIMIT         limit the number of requests per modules
 ```
  
 ## Example 
-It is recommended to run a check of all modules with the `-c all` option before using the program for its intended purpose, as the services may have changed their work logic since the code was published this, in turn,  may require  some corrections  in the module code.
+It is recommended to run a check of all modules with the `-c` (`--check`) option before using the program for its intended purpose, as the services may have changed their work logic since the code was published this, in turn,  may require  some corrections  in the module code.
  
 To get a list of available modules, run the program with the `-l` (`--list`) parameter.
 

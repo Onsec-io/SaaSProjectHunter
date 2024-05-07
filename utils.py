@@ -306,14 +306,6 @@ def run_check_module(module):
         log.error('Failed check module {} v{}!'.format(module.get_name(), module.get_version()))
 
 
-def check_modules(modules, module_name):
-    if module_name.lower() == 'all':
-        for m in modules:
-            run_check_module(m)
-    else:
-        for m in modules:
-            if m.get_name().lower() == module_name.lower():
-                run_check_module(m)
-                exit()
-        # after iterating modules and not finding name in modules:
-        print('Please, input module name or `all`')
+def check_modules(modules):
+    for m in modules:
+        run_check_module(m)

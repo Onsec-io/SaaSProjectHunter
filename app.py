@@ -24,12 +24,23 @@ def load_wordlist(path_to_file):
     return words
 
 
-def load_modules():
+def load_modules(name=False):
     modules = []
     folder = 'modules'
     if not os.path.exists(folder) or not os.path.isdir(folder):
         log.error('Folder of modules not found!')
         exit()
+
+    if name:
+        log.debug('Loading module {}...'.format(name))
+        try:
+            module = importlib.import_module(f'{folder}.{name}')
+        except ModuleNotFoundError:
+            log.error('Module {} not found!'.format(name))
+            exit()
+        modules.append(module)
+        return modules
+
     for file in os.listdir(folder):
         if file == '__init__.py' or file[-3:] != '.py':
             continue
@@ -60,9 +71,9 @@ def main():
         print(' '.join(result))
         exit()
 
-    if args.check_modules:
+    if args.check:
         log.info('Check modules...')
-        utils.check_modules(load_modules(), args.check_modules)
+        utils.check_modules(load_modules(args.module))
         exit()
 
     log.debug('Loading wordlist...')
@@ -81,7 +92,7 @@ def main():
         log.info('Number of lines in postfix file and new size of wordlist: {} - {}'.format(len(postfixlist), len(words)))
 
     log.debug('Loading modules...')
-    modules = load_modules()
+    modules = load_modules(args.module)
     log.info('Number of loaded modules: {}'.format(len(modules)))
 
     output = []
@@ -95,10 +106,11 @@ def main():
 parser = argparse.ArgumentParser(description='Example: python3 app.py -s google logstash octocat -v')
 group = parser.add_mutually_exclusive_group(required=True)
 group.add_argument('-l', '--list', action='store_true', default=False, help='print a list of available modules and exit')
-group.add_argument('-c', '--check-modules', action='store', type=str, default=False, help='specify the name of the module to check. Set to "all" for check all modules')
+group.add_argument('-c', '--check', action='store_true', default=False, help='Run check modules and exit')
 group.add_argument('-w', '--wordlist', help='wordlist file path')
 group.add_argument('-s', '--strings', help='or list of string over space', nargs='+')
 group.add_argument('-g', '--generator', help='run a generator for a list of input strings and exit', nargs='+')
+parser.add_argument('-m', '--module', action='store', type=str, default=False, help='Specify the name of the module to run/check')
 parser.add_argument('-t', '--threads', default=int(os.cpu_count())*2, type=int, help='number of concurrent threads. If not specified, the number of threads will be equal to the number of CPUs*2')
 parser.add_argument('-u', '--user-agent', default='Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/118.0', help='set User-Agent to use for requests')
 parser.add_argument('-v', '--verbose', default=0, action='count', help='increase output verbosity (-v, -vv)')
