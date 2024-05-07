@@ -9,7 +9,7 @@ def get_name():
 
 
 def get_version():
-    return '1.0'
+    return '1.1'
 
 
 def get_description():
@@ -26,24 +26,11 @@ def wordslist_for_check_module():
 def run(words):
     log.debug('Checking the wordlist for requirements of {} module...'.format(get_name()))
     domains = []
-    for endpoint in endpoints():
-        domains.extend(compile_subdomain(endpoint, words, proto=''))
+    endpoint = 'blob.core.windows.net'  # https://learn.microsoft.com/en-us/rest/api/storageservices/authorize-requests-to-azure-storage
+    domains.extend(compile_subdomain(endpoint, words, proto=''))
     log.debug('Run requests...')
     loop = asyncio.get_event_loop()
     responses = loop.run_until_complete(async_nslookup(domains))
     founded_projects = ['https://{}'.format(domain) for domain in responses if domain is not None]
     log.info('{}: founded {} sites'.format(get_name(), len(founded_projects)))
     return founded_projects
-
-
-def endpoints():
-    # https://learn.microsoft.com/bs-latn-ba/azure/security/fundamentals/azure-domains
-    # https://cloud.hacktricks.xyz/pentesting-cloud/azure-security/az-services/az-blob-storage
-    endpoint_list = [
-        'blob.core.windows.net',
-        'dfs.core.windows.net',
-        'file.core.windows.net',
-        'queue.core.windows.net',
-        'table.core.windows.net',
-    ]
-    return endpoint_list
