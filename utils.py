@@ -129,6 +129,9 @@ async def make_request(client, url, method, uuid=None, data=None, headers=None, 
                 r = await client.get(url, headers=headers, cookies=cookies)
 
             log.debug('Response status: {} ({})'.format(r.status_code, url))
+            if r.status_code == 429:
+                log.warning('Too many requests - 429: {}. Please wait 5-15 seconds'.format(url))
+                return [uuid, url]
             return [uuid, r]
     except asyncio.CancelledError:
         log.debug('Cancelled request to: {}'.format(url))
