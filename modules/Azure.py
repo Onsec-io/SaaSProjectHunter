@@ -9,11 +9,11 @@ def get_name():
 
 
 def get_version():
-    return '1.1'
+    return '1.2'
 
 
 def get_description():
-    return 'This module uses bruteforce of subdomains by Azure endpoints'
+    return 'This module uses bruteforce of subdomains by Azure endpoints (except storages/buckets)'
 
 
 def wordslist_for_check_module():
@@ -44,14 +44,10 @@ def endpoints():
         'azurecr.io',
         'azureedge.net',
         'azurewebsites.net',
-        'blob.core.windows.net',
         'database.windows.net',
         'documents.azure.com',
-        'file.core.windows.net',
-        'queue.core.windows.net',
         'redis.cache.windows.net',
         'scm.azurewebsites.net',
-        'table.core.windows.net',
         'vault.azure.net',
     ]
     endpoint_list.extend(endpoints_by_regions())
