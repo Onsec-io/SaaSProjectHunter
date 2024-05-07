@@ -31,6 +31,6 @@ def run(words):
     log.debug('Run requests...')
     loop = asyncio.get_event_loop()
     responses = loop.run_until_complete(async_nslookup(domains))
-    founded_projects = ['https://{}'.format(domain) for domain in responses if domain is not None]
+    founded_projects = ['https://{}/<BRUTEFORCE>?restype=container&comp=list'.format(domain) for domain in responses if domain is not None]
     log.info('{}: founded {} sites'.format(get_name(), len(founded_projects)))
     return founded_projects
