@@ -106,6 +106,7 @@ GithubUsers      https://github.com/google
 - [x] AWS S3 (Bucket, Website)
 - [x] Alibaba Cloud Object Storage
 - [x] Atlassian
+- [x] Azure (Cloud, Container, BLOB, etc)
 - [x] Bitbucket (Users/Company)
 - [x] Codeberg
 - [x] Deskpro
@@ -120,6 +121,7 @@ GithubUsers      https://github.com/google
 - [x] JIRA
 - [x] Kayako
 - [x] Linode Object Storage
+- [x] NPMjs (Packages, Users, Search)
 - [x] OVH Cloud Object Storage
 - [x] Postman (Users, Search)
 - [x] ReadTheDocs
@@ -134,7 +136,6 @@ GithubUsers      https://github.com/google
 - [x] Youtrack
 - [x] Zendesk
 - [x] Zoho (Desk, Wiki)
-- [x] Azure (Cloud, Container, BLOB, etc)
  
  
 ## Contributing

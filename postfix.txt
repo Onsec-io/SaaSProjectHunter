@@ -38,6 +38,7 @@
 -upload
 -web
 -wiki
+-ui
 1
 2
 3
