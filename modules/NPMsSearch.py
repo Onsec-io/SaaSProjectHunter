@@ -5,7 +5,7 @@ log = logger.get_logger('logger')
 
 
 def get_name():
-    return 'NPMjsSearch'
+    return 'NPMsSearch'
 
 
 def get_version():
