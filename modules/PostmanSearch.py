@@ -4,6 +4,7 @@ from uuid import uuid4
 from json import dumps
 import logger
 log = logger.get_logger('logger')
+import re
 
 
 def get_name():
@@ -11,7 +12,7 @@ def get_name():
 
 
 def get_version():
-    return '1.2'
+    return '1.3'
 
 
 def get_description():
@@ -26,10 +27,20 @@ def wordslist_for_check_module():
 
 
 def run(words):
-    words = [item.lower() for item in words]  # lowercase
+    processed_words = []
+    for item in words:
+        # Extract the first word before any non-alphanumeric character
+        first_word = re.split(r'\W+', item)[0].lower()
+        # Remove non-alphanumeric characters to create a concatenated version
+        concatenated_word = re.sub(r'\W+', '', item).lower()
+        processed_words.extend([first_word, concatenated_word])
+    
+    # Remove duplicates
+    processed_words = list(set(processed_words))
+    
     # create datasets
     datasets = {}
-    for word in words:
+    for word in processed_words:
         uuid = uuid4()
         data = dumps({
             "service": "search",

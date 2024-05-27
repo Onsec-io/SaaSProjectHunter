@@ -1,6 +1,6 @@
 # SaaSProjectHunter
  
-SaaSProjectHunter is the solution for easily searching projects/companies/users across multiple services (SaaS). It eliminates the need for manual checks of each service during pentesting/OSINT. SaaSProjectHunter interacts with the endpoints/APIs of various services to perform the search and has a modular structure to create separate modules to request sources separately.
+SaaSProjectHunter is a comprehensive solution for searching projects, companies, and users across multiple SaaS services. It streamlines the process of pentesting and OSINT by eliminating the need for manual checks across each service. SaaSProjectHunter interacts with service endpoints and APIs to perform searches and is designed with a modular structure, allowing for the creation of separate modules to handle different data sources.
  
 ## Installation
  
@@ -18,35 +18,30 @@ pip install -r requirements.txt
 ```
 python3 app.py --help
 
-usage: app.py [-h] [-l | -c] [-w WORDLIST | -s STRINGS [STRINGS ...]]
-              [-g [GENERATOR ...]] [-m MODULE] [-t THREADS] [-u USER_AGENT]
-              [-v] [-nc] [-p POSTFIX] [--limit LIMIT]
-
-Example: python3 app.py -s google logstash octocat -v
-
+usage: app.py [-h] [-l | -c] [-w WORDLIST | -s STRINGS [STRINGS ...]] [-g [GENERATOR ...]] [-m MODULE] [-t THREADS] [-u USER_AGENT] [-v] [-nc] [-p POSTFIX] [--limit LIMIT] [--proxies PROXIES]
+Example usage: python3 app.py -s google logstash octocat -v
 options:
   -h, --help            show this help message and exit
-  -l, --list            Print a list of available modules and exit
-  -c, --check           Run check modules and exit
+  -l, --list            Display a list of available modules and exit.
+  -c, --check           Execute module checks and exit.
   -w WORDLIST, --wordlist WORDLIST
-                        Wordlist file path
+                        Specify the file path to the wordlist.
   -s STRINGS [STRINGS ...], --strings STRINGS [STRINGS ...]
-                        List of strings over space
+                        Provide a list of strings separated by spaces.
   -g [GENERATOR ...], --generator [GENERATOR ...]
-                        Run a generator over wordlist
+                        Apply a generator to the wordlist.
   -m MODULE, --module MODULE
-                        Specify the name of the module to run/check
+                        Specify the module name to run or check.
   -t THREADS, --threads THREADS
-                        number of concurrent threads. If not specified, the
-                        number of threads will be equal to the number of
-                        CPUs*2
+                        Set the number of concurrent threads. Defaults to twice the number of CPU cores.
   -u USER_AGENT, --user-agent USER_AGENT
-                        set User-Agent to use for requests
-  -v, --verbose         increase output verbosity (-v, -vv)
-  -nc, --no-color       disable color output
+                        Set the User-Agent string for HTTP requests.
+  -v, --verbose         Increase output verbosity (e.g., -v for verbose, -vv for more verbose).
+  -nc, --no-color       Disable colored output.
   -p POSTFIX, --postfix POSTFIX
-                        Path to file with postfixes
-  --limit LIMIT         limit the number of requests per modules
+                        Specify the file path for postfixes.
+  --limit LIMIT         Set the maximum number of requests per module.
+  --proxies PROXIES     Specify the file path for HTTP/SOCKS proxies.
 ```
  
 ## Example 
@@ -54,7 +49,7 @@ It is recommended to run a check of all modules with the `-c` (`--check`) option
  
 To get a list of available modules, run the program with the `-l` (`--list`) parameter.
 
-The utility has the functionality to generate a list of words based on your input, such as a list of sites: `python app.py -g google.com domains.google`
+The utility can generate a list of words based on your input, such as a list of sites: `python app.py -g google.com domains.google`
 Output:
 ```
 google-com youtube.com youtube google_com googlecom youtubecom youtube_com youtube-com google.com google

@@ -7,6 +7,8 @@ import utils
 
 
 def load_wordlist(path_to_file):
+    if not path_to_file:
+        return None
     words = []
     if path_to_file:
         log.debug('Reading {}...'.format(path_to_file))
@@ -59,6 +61,8 @@ def main():
         exit()
 
     if args.check:
+        if args.proxies:
+            utils.check_all_proxies_sync()
         log.info('Check modules...')
         utils.check_modules(load_modules(args.module))
         exit()
@@ -110,32 +114,33 @@ def main():
     print(tabulate(output))
 
 
-parser = argparse.ArgumentParser(description='Example: python3 app.py -s google logstash octocat -v')
+print("SaaSProjectHunter (developed by ONSEC.io)\n")
+parser = argparse.ArgumentParser(description='Example usage: python3 app.py -s google logstash octocat -v')
 group = parser.add_mutually_exclusive_group()
-group.add_argument('-l', '--list', action='store_true', default=False, help='Print a list of available modules and exit')
-group.add_argument('-c', '--check', action='store_true', default=False, help='Run check modules and exit')
+group.add_argument('-l', '--list', action='store_true', default=False, help='Display a list of available modules and exit.')
+group.add_argument('-c', '--check', action='store_true', default=False, help='Execute module checks and exit.')
 
 input_group = parser.add_mutually_exclusive_group()
-input_group.add_argument('-w', '--wordlist', help='Wordlist file path')
-input_group.add_argument('-s', '--strings', nargs='+', help='List of strings over space')
+input_group.add_argument('-w', '--wordlist', help='Specify the file path to the wordlist.')
+input_group.add_argument('-s', '--strings', nargs='+', help='Provide a list of strings separated by spaces.')
 
-parser.add_argument('-g', '--generator', nargs='*', help='Run a generator over wordlist')
-parser.add_argument('-m', '--module', action='store', type=str, default=False, help='Specify the name of the module to run/check')
-parser.add_argument('-t', '--threads', default=int(os.cpu_count()) * 2, type=int, help='number of concurrent threads. If not specified, the number of threads will be equal to the number of CPUs*2')
-parser.add_argument('-u', '--user-agent', default='Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/118.0', help='set User-Agent to use for requests')
-parser.add_argument('-v', '--verbose', default=0, action='count', help='increase output verbosity (-v, -vv)')
-parser.add_argument('-nc', '--no-color', action='store_true', default=False, help='disable color output')
-parser.add_argument('-p', '--postfix', help='Path to file with postfixes')
-parser.add_argument('--limit', default=2500, type=int, help='limit the number of requests per modules')
+parser.add_argument('-g', '--generator', nargs='*', help='Apply a generator to the wordlist.')
+parser.add_argument('-m', '--module', action='store', type=str, default=False, help='Specify the module name to run or check.')
+parser.add_argument('-t', '--threads', default=int(os.cpu_count()) * 2, type=int, help='Set the number of concurrent threads. Defaults to twice the number of CPU cores.')
+parser.add_argument('-u', '--user-agent', default='Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/118.0', help='Set the User-Agent string for HTTP requests.')
+parser.add_argument('-v', '--verbose', default=0, action='count', help='Increase output verbosity (e.g., -v for verbose, -vv for more verbose).')
+parser.add_argument('-nc', '--no-color', action='store_true', default=False, help='Disable colored output.')
+parser.add_argument('-p', '--postfix', help='Specify the file path for postfixes.')
+parser.add_argument('--limit', default=10000, type=int, help='Set the maximum number of requests per module.')
+parser.add_argument('--proxies', default=None, help='Specify the file path for HTTP/SOCKS proxies.')
 
 args = parser.parse_args()
-if not (args.list or args.check):
-    if not (args.wordlist or args.strings or args.generator):
-        parser.error('One of the arguments -w/--wordlist, -s/--strings, or -g/--generator or -l/--list or -c/--check is required.')
+if not (args.wordlist or args.strings or args.generator or args.list or args.check):
+    parser.error('You must specify one of the following arguments: -w/--wordlist, -s/--strings, -g/--generator, -l/--list, or -c/--check.')
 
 
 log = logger.init_logger(args.verbose, args.no_color)
-utils.init(args.verbose, args.threads, args.user_agent, args.limit)
+utils.init(args.verbose, args.threads, args.user_agent, args.limit, load_wordlist(args.proxies))
 
 if __name__ == "__main__":
     main()

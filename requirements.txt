@@ -5,6 +5,7 @@ h2
 hpack
 httpcore
 httpx
+httpx[socks]
 hyperframe
 idna
 rfc3986

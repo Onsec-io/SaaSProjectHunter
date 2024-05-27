@@ -1,4 +1,5 @@
 import asyncio
+import random
 import httpx
 import aiodns
 from tqdm.asyncio import tqdm_asyncio
@@ -10,9 +11,10 @@ global limit
 global header_useragent
 global verbose
 global limit_requests
+global proxies
 
 
-def init(args_verbose, args_threads, args_user_agent, args_limit_requests):
+def init(args_verbose, args_threads, args_user_agent, args_limit_requests, args_proxies=None):
     global verbose
     verbose = args_verbose
 
@@ -24,6 +26,77 @@ def init(args_verbose, args_threads, args_user_agent, args_limit_requests):
 
     global limit_requests
     limit_requests = args_limit_requests
+
+    global proxies
+    if args_proxies:
+        log.info('Loading proxies...')
+        for p in args_proxies:
+            if not p.startswith('http://') and not p.startswith('https://') and not p.startswith('socks://'):
+                log.error('Invalid proxy: {}'.format(p))
+                exit()
+        log.info('Number of proxies loaded: {}'.format(len(args_proxies)))
+    proxies = args_proxies
+
+
+def get_proxy(num=None):
+    if not proxies:
+        return None
+    if num is not None:
+        proxy_str = proxies[num]
+    else:
+        proxy_str = random.choice(proxies)
+
+    if proxy_str.startswith('http://') or proxy_str.startswith('https://'):
+        log.debug('HTTP/HTTPS proxy: {}'.format(proxy_str))
+        return {'http://': proxy_str, 'https://': proxy_str}
+    elif proxy_str.startswith('socks://'):
+        log.debug('SOCKS proxy: {}'.format(proxy_str))
+        return {'socks://': proxy_str}
+    else:
+        return None
+
+
+async def check_proxy_ip(proxy):
+    log.debug(f"Starting check for proxy: {proxy}")
+    url = 'https://api.ipify.org/?format=text'
+    try:
+        async with httpx.AsyncClient(proxies=proxy) as client:
+            r = await client.get(url)
+            if r.status_code == 200:
+                log.info(f"Proxy {proxy} is working, IP: {r.text}")
+                return r.text
+            else:
+                log.error(f"Proxy {proxy} failed with status code {r.status_code}")
+    except Exception as e:
+        log.error(f"Failed to check proxy {proxy}: {e}")
+        exit()
+    return None
+
+
+async def check_all_proxies():
+    if not proxies:
+        log.warning('No proxies found')
+        return
+    tasks = []
+    for i in range(len(proxies)):
+        task = asyncio.create_task(check_proxy_ip(get_proxy(num=i)))
+        tasks.append(task)
+    if verbose > 0:
+        responses = await asyncio.gather(*tasks)  # return None and response
+    else:
+        responses = await tqdm_asyncio.gather(*tasks, leave=False)  # return None and response
+    for proxy, ip in zip(proxies, responses):
+        if ip:
+            log.info(f'Proxy {proxy} is working, IP: {ip}')
+        else:
+            log.error(f'Proxy {proxy} failed.')
+
+
+def check_all_proxies_sync():
+    print('Checking proxies...')
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(check_all_proxies())
+    print('Checking proxies complete')
 
 
 def wait_user_input():
@@ -51,7 +124,6 @@ def generator(words):
             result.add(parts[0])
     blacklist = {'http', 'https', 'www', 'com', 'net', 'org', 'edu', 'gov', 'mil', 'int', 'arpa', 'co.uk'}
     return [word for word in result if word not in blacklist]
-
 
 
 async def make_nslookup(resolver, domain):
@@ -94,6 +166,7 @@ async def async_nslookup(domains):
     return responses
 
 
+
 async def make_request(client, url, method, uuid=None, data=None, headers=None, cookies=None):
     try:
         async with limit:
@@ -106,6 +179,12 @@ async def make_request(client, url, method, uuid=None, data=None, headers=None, 
             else:
                 log.debug('Run request to: {}'.format(url))
             method = method.lower()
+            
+            proxy = get_proxy()
+            if proxy:  # recreate the client, because a new random proxy is needed for each request
+                log.debug('Run request over proxy: {}'.format(proxy))
+                client = httpx.AsyncClient(http2=True, proxies=proxy)
+
             if method == 'head':
                 r = await client.head(url, headers=headers, cookies=cookies)
             elif method == 'post':
