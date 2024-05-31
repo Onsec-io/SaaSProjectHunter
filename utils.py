@@ -60,7 +60,7 @@ async def check_proxy_ip(proxy):
     log.debug(f"Starting check for proxy: {proxy}")
     url = 'https://api.ipify.org/?format=text'
     try:
-        async with httpx.AsyncClient(proxies=proxy) as client:
+        async with httpx.AsyncClient(proxies=proxy, verify=False) as client:
             r = await client.get(url)
             if r.status_code == 200:
                 log.info(f"Proxy {proxy} is working, IP: {r.text}")
@@ -183,7 +183,7 @@ async def make_request(client, url, method, uuid=None, data=None, headers=None, 
             proxy = get_proxy()
             if proxy:
                 log.debug('Run request over proxy: {}'.format(proxy))
-                async with httpx.AsyncClient(http2=True, proxies=proxy) as client:
+                async with httpx.AsyncClient(http2=True, proxies=proxy, verify=False) as client:
                     r = await perform_request(client, url, method, data, headers, cookies)
             else:
                 r = await perform_request(client, url, method, data, headers, cookies)
@@ -215,7 +215,7 @@ async def async_requests(urls, method='head', http2=True, additional_headers=Non
         headers = {**header_useragent, **additional_headers}  # merge two dict: useragent and additional headers
     else:
         headers = header_useragent
-    client = httpx.AsyncClient(http2=http2, headers=headers)
+    client = httpx.AsyncClient(http2=http2, headers=headers, verify=False)
     tasks = []
     if len(urls) > limit_requests:
         log.warning('Count tasks more than limit. Run only first {} requests'.format(limit_requests))
@@ -260,7 +260,7 @@ async def async_requests_over_datasets(datasets, http2=True):
     headers = header_useragent  # example: {'X-Auth': 'from-client'}
     cookies = None  # example: {'key': 'value'}
     data = None  # example: {'key': 'value'}
-    client = httpx.AsyncClient(http2=True)  # usage one async client for reuse sockets
+    client = httpx.AsyncClient(http2=True, verify=False)  # usage one async client for reuse sockets
 
     if len(datasets) > limit_requests:
         log.warning('Count tasks more than limit. Run only first {} requests'.format(limit_requests))
