@@ -181,16 +181,12 @@ async def make_request(client, url, method, uuid=None, data=None, headers=None, 
             method = method.lower()
             
             proxy = get_proxy()
-            if proxy:  # recreate the client, because a new random proxy is needed for each request
+            if proxy:
                 log.debug('Run request over proxy: {}'.format(proxy))
-                client = httpx.AsyncClient(http2=True, proxies=proxy)
-
-            if method == 'head':
-                r = await client.head(url, headers=headers, cookies=cookies)
-            elif method == 'post':
-                r = await client.post(url, data=data, headers=headers, cookies=cookies)
+                async with httpx.AsyncClient(http2=True, proxies=proxy) as client:
+                    r = await perform_request(client, url, method, data, headers, cookies)
             else:
-                r = await client.get(url, headers=headers, cookies=cookies)
+                r = await perform_request(client, url, method, data, headers, cookies)
 
             log.debug('Response status: {} ({})'.format(r.status_code, url))
             if r.status_code == 429:
@@ -203,6 +199,15 @@ async def make_request(client, url, method, uuid=None, data=None, headers=None, 
     except (httpx.ConnectError, httpx.ConnectTimeout, httpx.ReadTimeout, httpx.ReadError, httpx.LocalProtocolError, httpx.RemoteProtocolError):
         log.error('Error connect to {}...'.format(url))
         return [uuid, url]
+
+
+async def perform_request(client, url, method, data, headers, cookies):
+    if method == 'head':
+        return await client.head(url, headers=headers, cookies=cookies)
+    elif method == 'post':
+        return await client.post(url, data=data, headers=headers, cookies=cookies)
+    else:
+        return await client.get(url, headers=headers, cookies=cookies)
 
 
 async def async_requests(urls, method='head', http2=True, additional_headers=None):
