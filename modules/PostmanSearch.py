@@ -15,6 +15,10 @@ def get_version():
     return '1.3'
 
 
+def get_tags():
+    return ['limit']
+
+
 def get_description():
     return 'This module uses bruteforce of API www.postman.com to search workspaces/collections/etc'
 

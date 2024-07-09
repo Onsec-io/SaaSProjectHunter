@@ -14,6 +14,10 @@ def get_version():
     return '1.0'
 
 
+def get_tags():
+    return ['s3', 'backet', 'subdomain', 'nolimit']
+
+
 def get_description():
     return 'This module uses bruteforce name of bucket over endpoint <region>.<type>.cloud.ovh.net to find OVH Cloud Object Storage'
 

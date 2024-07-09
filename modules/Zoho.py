@@ -12,6 +12,10 @@ def get_version():
     return '1.1'
 
 
+def get_tags():
+    return ['subdomain', 'nolimit']
+
+
 def get_description():
     return 'This module uses bruteforce of wiki.zoho.com and zohodesk.com subdomain-sites to find interesting projects (Wiki + Desk)'
 

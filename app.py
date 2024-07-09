@@ -23,7 +23,7 @@ def load_wordlist(path_to_file):
     return words
 
 
-def load_modules(name=False):
+def load_modules(name=False, tag=None):
     folder = 'modules'
     if not os.path.exists(folder) or not os.path.isdir(folder):
         log.error('Folder of modules not found!')
@@ -45,7 +45,8 @@ def load_modules(name=False):
             module_name = file[:-3]
             log.debug('Import {}...'.format(module_name))
             module = importlib.import_module(f'{folder}.{module_name}')
-            modules.append(module)
+            if not tag or tag in module.get_tags():
+                modules.append(module)
     return sorted(modules, key=lambda x: x.get_name())
 
 
@@ -57,14 +58,14 @@ def main():
         modules = load_modules()
         print('List of available modules ({}):'.format(len(modules)))
         for m in modules:
-            print(' - {} {}: {}'.format(m.get_name(), m.get_version(), m.get_description()))
+            print(' - {} {} (tags: {}): {}'.format(m.get_name(), m.get_version(), ', '.join(m.get_tags()), m.get_description()))
         exit()
 
     if args.check:
         if args.proxies:
             utils.check_all_proxies_sync()
         log.info('Check modules...')
-        utils.check_modules(load_modules(args.module))
+        utils.check_modules(load_modules(args.module, args.tag))
         exit()
 
     if args.strings:
@@ -103,7 +104,7 @@ def main():
         log.info('Number of lines after applying postfix: {}'.format(len(words)))
 
     log.debug('Loading modules...')
-    modules = load_modules(args.module)
+    modules = load_modules(args.module, args.tag)
     log.info('Number of loaded modules: {}'.format(len(modules)))
 
     output = []
@@ -116,13 +117,6 @@ def main():
 
 print("SaaSProjectHunter (developed by ONSEC.io)\n")
 parser = argparse.ArgumentParser(description='Example usage: python3 app.py -s google logstash octocat -v')
-group = parser.add_mutually_exclusive_group()
-group.add_argument('-l', '--list', action='store_true', default=False, help='Display a list of available modules and exit.')
-group.add_argument('-c', '--check', action='store_true', default=False, help='Execute module checks and exit.')
-
-input_group = parser.add_mutually_exclusive_group()
-input_group.add_argument('-w', '--wordlist', help='Specify the file path to the wordlist.')
-input_group.add_argument('-s', '--strings', nargs='+', help='Provide a list of strings separated by spaces.')
 
 parser.add_argument('-g', '--generator', nargs='*', help='Apply a generator to the wordlist.')
 parser.add_argument('-m', '--module', action='store', type=str, default=False, help='Specify the module name to run or check.')
@@ -133,6 +127,15 @@ parser.add_argument('-nc', '--no-color', action='store_true', default=False, hel
 parser.add_argument('-p', '--postfix', help='Specify the file path for postfixes.')
 parser.add_argument('--limit', default=10000, type=int, help='Set the maximum number of requests per module.')
 parser.add_argument('--proxies', default=None, help='Specify the file path for HTTP/SOCKS proxies.')
+parser.add_argument('--tag', default=None, help='Specify the tag for run only specific modules.')
+
+group = parser.add_mutually_exclusive_group()
+group.add_argument('-l', '--list', action='store_true', default=False, help='Display a list of available modules and exit.')
+group.add_argument('-c', '--check', action='store_true', default=False, help='Execute module checks and exit.')
+
+input_group = parser.add_mutually_exclusive_group()
+input_group.add_argument('-w', '--wordlist', help='Specify the file path to the wordlist.')
+input_group.add_argument('-s', '--strings', nargs='+', help='Provide a list of strings separated by spaces.')
 
 args = parser.parse_args()
 if not (args.wordlist or args.strings or args.generator or args.list or args.check):

@@ -11,6 +11,9 @@ def get_name():
 def get_version():
     return '1.0'
 
+def get_tags():
+    return ['limit']
+
 
 def get_description():
     return 'This module uses bruteforce URL-path over github.com/<path> to find interesting projects'

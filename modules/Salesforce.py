@@ -12,6 +12,10 @@ def get_version():
     return '1.0'
 
 
+def get_tags():
+    return ['dns', 'subdomain', 'nolimit']
+
+
 def get_description():
     return 'This module uses bruteforce of my.salesforce.com subdomain-sites to find interesting projects'
 

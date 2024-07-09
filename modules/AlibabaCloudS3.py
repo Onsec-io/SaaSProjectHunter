@@ -14,6 +14,10 @@ def get_version():
     return '1.0'
 
 
+def get_tags():
+    return ['s3', 'backet', 'subdomain', 'nolimit']
+
+
 def get_description():
     return 'This module uses bruteforce of <region>.aliyuncs.com subdomain-sites to find interesting buckets'
 

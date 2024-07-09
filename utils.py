@@ -366,7 +366,7 @@ def run_check_module(module):
             log.info('>> All real projects found')
             count += 1
         else:
-            log.warning('Test {} failed. Found only: {}'.format(module.get_name(), [x for x in real_projects]))
+            log.warning('Test {} failed. Found only: {}'.format(module.get_name(), [x for x in found_projects]))
             log.debug('List of responses URL: {}'.format(result))
     else:
         log.warning('Test {} failed. Found only {} out of {} projects: {}'.format(module.get_name(), len(result), len(real_projects), [x for x in result]))

@@ -14,6 +14,10 @@ def get_version():
     return '1.1'
 
 
+def get_tags():
+    return ['site', 'subdomain', 'nolimit']
+
+
 def get_description():
     return 'This module uses bruteforce of <s3-website-region>.amazonaws.com subdomain-sites to find interesting projects'
 

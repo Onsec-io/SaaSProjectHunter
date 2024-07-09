@@ -9,7 +9,11 @@ def get_name():
 
 
 def get_version():
-    return '1.1'
+    return '1.2'
+
+
+def get_tags():
+    return ['subdomain', 'nolimit']
 
 
 def get_description():
@@ -30,7 +34,6 @@ def run(words):
     loop = asyncio.get_event_loop()
     responses = loop.run_until_complete(async_requests(urls))
     founded_projects = ['https://{}/'.format(r.url.host) for r in responses if r.headers.get(
-        'content-length') == '0' and r.status_code == 301 and 'https://www.zendesk.com/app/help-center-closed' not in r.headers.get(
-        'location')]
+        'strict-transport-security') == 'max-age=31536000; includeSubDomains' and r.status_code == 301]
     log.info('{}: founded {} sites'.format(get_name(), len(founded_projects)))
     return founded_projects

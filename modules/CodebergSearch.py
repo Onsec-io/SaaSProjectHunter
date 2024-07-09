@@ -13,6 +13,10 @@ def get_version():
     return '1.0'
 
 
+def get_tags():
+    return ['limit']
+
+
 def get_description():
     return 'This module uses Codeberg search (Repositories/Users/Organizations) and extracts values from responses'
 

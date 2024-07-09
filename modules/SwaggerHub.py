@@ -12,6 +12,10 @@ def get_version():
     return '1.1'
 
 
+def get_tags():
+    return ['limit']
+
+
 def get_description():
     return 'This module uses bruteforce of search over parameters `onwer` and `query` (https://app.swaggerhub.com/apiproxy/specs)'
 

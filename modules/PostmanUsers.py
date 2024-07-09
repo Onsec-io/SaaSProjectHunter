@@ -14,6 +14,10 @@ def get_version():
     return '1.2'
 
 
+def get_tags():
+    return ['limit']
+
+
 def get_description():
     return 'This module uses bruteforce of API www.postman.com (/api/profiles/<name>) to find users/orgs'
 

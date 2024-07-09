@@ -18,16 +18,14 @@ pip install -r requirements.txt
 ```
 python3 app.py --help
 
-usage: app.py [-h] [-l | -c] [-w WORDLIST | -s STRINGS [STRINGS ...]] [-g [GENERATOR ...]] [-m MODULE] [-t THREADS] [-u USER_AGENT] [-v] [-nc] [-p POSTFIX] [--limit LIMIT] [--proxies PROXIES]
+SaaSProjectHunter (developed by ONSEC.io)
+
+usage: app.py [-h] [-g [GENERATOR ...]] [-m MODULE] [-t THREADS] [-u USER_AGENT] [-v] [-nc] [-p POSTFIX] [--limit LIMIT] [--proxies PROXIES] [--tag TAG] [-l | -c] [-w WORDLIST | -s STRINGS [STRINGS ...]]
+
 Example usage: python3 app.py -s google logstash octocat -v
+
 options:
   -h, --help            show this help message and exit
-  -l, --list            Display a list of available modules and exit.
-  -c, --check           Execute module checks and exit.
-  -w WORDLIST, --wordlist WORDLIST
-                        Specify the file path to the wordlist.
-  -s STRINGS [STRINGS ...], --strings STRINGS [STRINGS ...]
-                        Provide a list of strings separated by spaces.
   -g [GENERATOR ...], --generator [GENERATOR ...]
                         Apply a generator to the wordlist.
   -m MODULE, --module MODULE
@@ -42,6 +40,13 @@ options:
                         Specify the file path for postfixes.
   --limit LIMIT         Set the maximum number of requests per module.
   --proxies PROXIES     Specify the file path for HTTP/SOCKS proxies.
+  --tag TAG             Specify the tag for run only specific modules.
+  -l, --list            Display a list of available modules and exit.
+  -c, --check           Execute module checks and exit.
+  -w WORDLIST, --wordlist WORDLIST
+                        Specify the file path to the wordlist.
+  -s STRINGS [STRINGS ...], --strings STRINGS [STRINGS ...]
+                        Provide a list of strings separated by spaces.
 ```
  
 ## Example 
@@ -71,29 +76,89 @@ To gain a better understanding of the tool's workings, you can run the tool with
 ```
 python app.py -s google logstash octocat
 ---------------  --------------------------------------------------
+AlibabaCloudS3   http://logstash.oss-cn-hangzhou.aliyuncs.com/
+AlibabaCloudS3   http://google.oss-cn-hangzhou.aliyuncs.com/
+AmazonS3Bucket   https://s3.amazonaws.com/octocat (Access Denied)
+AmazonS3Bucket   https://s3.amazonaws.com/logstash (Access Denied)
+AmazonS3Bucket   https://s3.amazonaws.com/google (Access Denied)
+Atlassian        https://octocat.atlassian.net/
+Atlassian        https://google.atlassian.net/
+Azure            https://google.azurecr.io
+Azure            https://google.database.windows.net
+Azure            https://logstash.vault.azure.net
+Azure            https://google.vault.azure.net
+Azure            https://logstash.eastasia.cloudapp.azure.com
+Azure            https://google.eastasia.cloudapp.azure.com
+Azure            https://logstash.eastus.cloudapp.azure.com
+Azure            https://google.eastus.cloudapp.azure.com
+Azure            https://logstash.eastus2.cloudapp.azure.com
+Azure            https://google.japaneast.cloudapp.azure.com
+Azure            https://google.koreasouth.cloudapp.azure.com
+Azure            https://google.southcentralus.cloudapp.azure.com
+Azure            https://google.westcentralus.cloudapp.azure.com
+Azure            https://logstash.westeurope.cloudapp.azure.com
+Azure            https://google.westeurope.cloudapp.azure.com
+Azure            https://logstash.westus2.azurecontainer.io
+AzureStorage     https://logstash.blob.core.windows.net/<BRUTEFORCE>?restype=container&comp=list
+AzureStorage     https://google.blob.core.windows.net/<BRUTEFORCE>?restype=container&comp=list
+Bitbucket        https://bitbucket.org/octocat/
+CodebergSearch   https://codeberg.org/explore/repos?only_show_relevant=false&q=octocat
+CodebergSearch   https://codeberg.org/explore/organizations?q=google
+CodebergSearch   https://codeberg.org/explore/repos?only_show_relevant=false&q=logstash
+CodebergSearch   https://codeberg.org/explore/repos?only_show_relevant=false&q=google
+CodebergSearch   https://codeberg.org/explore/users?q=google
+CodebergSearch   https://codeberg.org/explore/organizations?q=octocat
+DigitalOceanS3   https://google.sfo3.digitaloceanspaces.com
 DockerHubSearch  https://hub.docker.com/search?q=octocat
 DockerHubSearch  https://hub.docker.com/search?q=logstash
 DockerHubSearch  https://hub.docker.com/search?q=google
-DockerHubUsers   https://hub.docker.com/v2/users/logstash
-DockerHubUsers   https://hub.docker.com/v2/users/google
+DockerHubUsers   https://hub.docker.com/u/logstash
+DockerHubUsers   https://hub.docker.com/u/google
+GetOutline       https://google.getoutline.com/
+GitLab           https://gitlab.com/google
+GitLab           https://gitlab.com/logstash
+GithubGist       https://gist.github.com/search?q=%22google%22
+GithubGist       https://gist.github.com/search?q=%22octocat%22
+GithubGist       https://gist.github.com/search?q=%22logstash%22
 GithubPages      https://octocat.github.io/
 GithubPages      https://google.github.io/
-PostmanSearch    https://www.postman.com/search?q=google
-PostmanSearch    https://www.postman.com/search?q=logstash
-AmazonS3Sites    http://google.s3-website.ap-south-1.amazonaws.com/
-GetOutline       https://google.getoutline.com/
-readthedocs      https://google.readthedocs.io/
-AmazonS3Bucket   https://s3.amazonaws.com/octocat
-AmazonS3Bucket   https://s3.amazonaws.com/logstash
-AmazonS3Bucket   https://s3.amazonaws.com/google
-Jira             https://logstash.jira.com/
-Atlassian        https://google.atlassian.net/
-Slack            https://octocat.slack.com/
-Slack            https://logstash.slack.com/
-Slack            https://google.slack.com/
+GithubSearch     https://github.com/search?q=%22octocat%22
+GithubSearch     https://github.com/search?q=%22google%22
+GithubSearch     https://github.com/search?q=%22logstash%22
 GithubUsers      https://github.com/octocat
 GithubUsers      https://github.com/logstash
 GithubUsers      https://github.com/google
+GoogleS3         https://logstash.storage.googleapis.com
+Jira             https://logstash.jira.com/
+LinodeS3         https://google.us-east-1.linodeobjects.com
+NPMjs            https://www.npmjs.com/package/octocat
+NPMjs            https://www.npmjs.com/package/logstash
+NPMjs            https://www.npmjs.com/package/google
+NPMsSearch       https://api.npms.io/v2/search?q=scope:google
+NPMsSearch       https://api.npms.io/v2/search?q=author:google
+NPMsSearch       https://api.npms.io/v2/search?q=octocat
+NPMsSearch       https://api.npms.io/v2/search?q=logstash
+NPMsSearch       https://api.npms.io/v2/search?q=google
+OVHCloudS3       https://google.s3.de.io.cloud.ovh.net
+PostmanSearch    https://www.postman.com/search?q=octocat
+PostmanSearch    https://www.postman.com/search?q=logstash
+PostmanSearch    https://www.postman.com/search?q=google
+ReadTheDocs      https://google.readthedocs.io/
+ScalewayS3       https://google.s3.nl-ams.scw.cloud
+SearchCode       https://searchcode.com/?q=octocat
+SearchCode       https://searchcode.com/?q=logstash
+SearchCode       https://searchcode.com/?q=google
+Slack            https://octocat.slack.com/
+Slack            https://logstash.slack.com/
+Slack            https://google.slack.com/
+SwaggerHub       https://app.swaggerhub.com/search?query=octocat
+SwaggerHub       https://app.swaggerhub.com/search?query=logstash
+SwaggerHub       https://app.swaggerhub.com/search?query=google
+Tilda            https://google.tilda.ws/
+VultrS3          https://google.sgp1.vultrobjects.com
+YouTrack         https://google.youtrack.cloud/
+Zoho             https://google.wiki.zoho.com/
+Zoho             https://google.zohodesk.com/
 ---------------  --------------------------------------------------
 ```
  

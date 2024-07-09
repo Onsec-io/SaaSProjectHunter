@@ -13,6 +13,10 @@ def get_version():
     return '1.2'
 
 
+def get_tags():
+    return ['limit']
+
+
 def get_description():
     return 'This module uses GitHub Gist search (/search?q=)'
 

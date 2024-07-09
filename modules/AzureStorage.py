@@ -12,6 +12,10 @@ def get_version():
     return '1.1'
 
 
+def get_tags():
+    return ['dns', 'subdomain', 'nolimit']
+
+
 def get_description():
     return 'This module uses bruteforce of subdomains by Azure Storage endpoints'
 

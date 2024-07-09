@@ -12,6 +12,10 @@ def get_version():
     return '1.1'
 
 
+def get_tags():
+    return ['subdomain', 'limit']
+
+
 def get_description():
     return 'This module uses bruteforce of atlassian.net subdomain-sites to find interesting projects'
 

@@ -13,6 +13,10 @@ def get_version():
     return '1.2'
 
 
+def get_tags():
+    return ['limit']
+
+
 def get_description():
     return 'This module uses GitHub search (/search/count) and extracts values from responses'
 

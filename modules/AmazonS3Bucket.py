@@ -12,6 +12,10 @@ def get_version():
     return '1.2'
 
 
+def get_tags():
+    return ['s3', 'backet']
+
+
 def get_description():
     return 'This module uses bruteforce name of bucket over endpoint s3.amazonaws.com to find interesting projects'
 

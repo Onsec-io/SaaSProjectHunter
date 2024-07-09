@@ -12,6 +12,10 @@ def get_version():
     return '1.1'
 
 
+def get_tags():
+    return ['limit']
+
+
 def get_description():
     return 'This module uses bruteforce of API getoutline.com to find interesting projects'
 
@@ -29,7 +33,6 @@ def run(words):
     log.debug('Run requests...')
     loop = asyncio.get_event_loop()
     responses = loop.run_until_complete(async_requests(urls, method='post'))
-    founded_projects = ['https://{}/'.format(r.url.host) for r in responses if
-                        r.status_code == 200 and 'name' in r.json()['data']]
+    founded_projects = ['https://{}/'.format(r.url.host) for r in responses if r.status_code == 200 and 'name' in r.json()['data']]
     log.info('{}: founded {} sites'.format(get_name(), len(founded_projects)))
     return founded_projects

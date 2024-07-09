@@ -12,6 +12,10 @@ def get_version():
     return '1.0'
 
 
+def get_tags():
+    return ['s3', 'backet', 'subdomain', 'nolimit']
+
+
 def get_description():
     return 'This module uses bruteforce name of bucket over <region>.digitaloceanspaces.com to find interesting buckets'
 

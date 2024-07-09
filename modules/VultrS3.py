@@ -9,7 +9,11 @@ def get_name():
 
 
 def get_version():
-    return '1.1'
+    return '1.2'
+
+
+def get_tags():
+    return ['s3', 'backet', 'subdomain', 'nolimit']
 
 
 def get_description():
@@ -18,7 +22,7 @@ def get_description():
 
 def wordslist_for_check_module():
     return {
-        'real': ['alicante', 'ladezeit-elektroauto', 'outdoor-luxury'],
+        'real': ['alicante', 'ndclibrary', 'outdoor-luxury'],
         'fake': ['8457fj20d', 'uenrf348', '8rurur8ud']
     }
 

@@ -12,6 +12,10 @@ def get_version():
     return '1.0'
 
 
+def get_tags():
+    return ['limit']
+
+
 def get_description():
     return 'This module uses bruteforce of API hub.docker.com/v2/users/<> to find users/orgs'
 
