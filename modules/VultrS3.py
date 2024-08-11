@@ -22,7 +22,7 @@ def get_description():
 
 def wordslist_for_check_module():
     return {
-        'real': ['alicante', 'ndclibrary', 'outdoor-luxury'],
+        'real': ['alicante', 'ndclibrary', 'kaimanga'],
         'fake': ['8457fj20d', 'uenrf348', '8rurur8ud']
     }
 

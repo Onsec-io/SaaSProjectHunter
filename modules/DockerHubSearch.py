@@ -32,7 +32,7 @@ def run(words):
     urls = compile_url('hub.docker.com/api/content/v1/products/search?page_size=1&q=', words)
     log.debug('Run requests...')
     loop = asyncio.get_event_loop()
-    responses = loop.run_until_complete(async_requests(urls, method='get', additional_headers={'Search-Version': 'v3'}))
+    responses = loop.run_until_complete(async_requests(urls, method='get'))
     founded_projects = []
     for r in responses:
         if r.status_code == 200 and r.json()['count'] != 0:
