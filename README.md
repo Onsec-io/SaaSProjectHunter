@@ -163,9 +163,9 @@ Zoho             https://google.zohodesk.com/
 ```
  
 ## List of modules
-- [x] AWS S3 (Bucket, Website)
 - [x] Alibaba Cloud Object Storage
 - [x] Atlassian
+- [x] AWS S3 (Bucket, Website)
 - [x] Azure (Cloud, Container, BLOB, etc)
 - [x] Bitbucket (Users/Company)
 - [x] Codeberg
@@ -173,15 +173,17 @@ Zoho             https://google.zohodesk.com/
 - [x] DigitalOcean Spaces Object Storage
 - [x] DockerHub (Users, Search)
 - [x] GetOutline
-- [x] GitLab (Users, Groups)
 - [x] Github (Users, Search)
 - [x] Github Gist (gist.github.com)
 - [x] Github Pages (github.io)
+- [x] GitLab (Users, Groups)
 - [x] Google Cloud Storage Buckets
+- [x] GrayhatWarfare (buckets.grayhatwarfare.com)
 - [x] JIRA
 - [x] Kayako
 - [x] Linode Object Storage
 - [x] NPMjs (Packages, Users, Search)
+- [x] OpenBuckets.io (buckets and files)
 - [x] OVH Cloud Object Storage
 - [x] Postman (Users, Search)
 - [x] ReadTheDocs
@@ -196,7 +198,7 @@ Zoho             https://google.zohodesk.com/
 - [x] Youtrack
 - [x] Zendesk
 - [x] Zoho (Desk, Wiki)
- 
+
  
 ## Contributing
  
