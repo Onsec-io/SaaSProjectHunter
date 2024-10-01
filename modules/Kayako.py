@@ -33,6 +33,6 @@ def run(words):
     log.debug('Run requests...')
     loop = asyncio.get_event_loop()
     responses = loop.run_until_complete(async_requests(urls))
-    founded_projects = ['https://{}/'.format(r.url.host) for r in responses if r.status_code != 404]
+    founded_projects = ['https://{}/'.format(r.url.host) for r in responses if r.status_code not in [404, 490]]
     log.info('{}: founded {} sites'.format(get_name(), len(founded_projects)))
     return founded_projects

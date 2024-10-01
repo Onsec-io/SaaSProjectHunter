@@ -32,7 +32,7 @@ def run(words):
     founded_projects = []
     log.debug('Checking the wordlist for requirements of {} module...'.format(get_name()))
     words = [item.lower() for item in words]  # lowercase
-    params = ['/search?q="{}"'.format(word) for word in words]
+    params = ['/search?q=%22{}%22'.format(word) for word in words]
     urls = compile_url('gist.github.com', params)
     log.debug('Compiled {} urls for request ({})'.format(len(urls), get_name()))
     log.debug('Run requests...')
@@ -41,7 +41,8 @@ def run(words):
     for r in responses:
         if 'Rate limit' in r.text:
             log.warning('{}: rate limit exceeded: {}'.format(get_name(), r.url))
-        elif not 'We couldn’t find any gists matching' in r.text:  # Counter--primary in response (html-code)
+        elif not "find any gists matching" in r.text:  # Counter--primary in response (html-code)
+            print(r.url)
             match = re.search(r'q=%22([^&]+)%22', str(r.url))  # extract value of param `q` from original URL
             if match.group(1) in words:
                 founded_projects.append('https://gist.github.com/search?q=%22{}%22'.format(match.group(1)))

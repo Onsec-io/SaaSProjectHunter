@@ -46,12 +46,9 @@ def get_proxy(num=None):
     else:
         proxy_str = random.choice(proxies)
 
-    if proxy_str.startswith('http://') or proxy_str.startswith('https://'):
-        log.debug('HTTP/HTTPS proxy: {}'.format(proxy_str))
-        return {'http://': proxy_str, 'https://': proxy_str}
-    elif proxy_str.startswith('socks://'):
-        log.debug('SOCKS proxy: {}'.format(proxy_str))
-        return {'socks://': proxy_str}
+    if proxy_str.startswith('http://') or proxy_str.startswith('https://') or proxy_str.startswith('socks://'):
+        log.debug('Used proxy: {}'.format(proxy_str))
+        return proxy_str
     else:
         return None
 
@@ -60,7 +57,7 @@ async def check_proxy_ip(proxy):
     log.debug(f"Starting check for proxy: {proxy}")
     url = 'https://api.ipify.org/?format=text'
     try:
-        async with httpx.AsyncClient(proxies=proxy, verify=False) as client:
+        async with httpx.AsyncClient(proxy=proxy, verify=False) as client:
             r = await client.get(url)
             if r.status_code == 200:
                 log.info(f"Proxy {proxy} is working, IP: {r.text}")
@@ -183,7 +180,7 @@ async def make_request(client, url, method, uuid=None, data=None, headers=None, 
             proxy = get_proxy()
             if proxy:
                 log.debug('Run request over proxy: {}'.format(proxy))
-                async with httpx.AsyncClient(http2=True, proxies=proxy, verify=False) as client:
+                async with httpx.AsyncClient(http2=True, proxy=proxy, verify=False) as client:
                     r = await perform_request(client, url, method, data, headers, cookies)
             else:
                 r = await perform_request(client, url, method, data, headers, cookies)
@@ -220,7 +217,7 @@ async def async_requests(urls, method='head', http2=True, additional_headers=Non
     if len(urls) > limit_requests:
         log.warning('Count tasks more than limit. Run only first {} requests'.format(limit_requests))
     for url in urls[:limit_requests]:
-        task = asyncio.create_task(make_request(client, url, method))
+        task = asyncio.create_task(make_request(client, url, method, headers=headers))
         tasks.append(task)
 
     def signal_handler(sig, frame):
