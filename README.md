@@ -1,21 +1,24 @@
 # SaaSProjectHunter
- 
+
 SaaSProjectHunter is a comprehensive solution for searching projects, companies, and users across multiple SaaS services. It streamlines the process of pentesting and OSINT by eliminating the need for manual checks across each service. SaaSProjectHunter interacts with service endpoints and APIs to perform searches and is designed with a modular structure, allowing for the creation of separate modules to handle different data sources.
- 
+
 ## Installation
- 
+
 1. Clone the repository:
-```
+
+```bash
 git clone https://github.com/Onsec-io/SaaSProjectHunter.git
 ```
- 
+
 2. Install the required packages:
-```
+
+```bash
 pip install -r requirements.txt
 ```
- 
+
 3. Run the project:
-```
+
+```bash
 python3 app.py --help
 
 SaaSProjectHunter (developed by ONSEC.io)
@@ -48,32 +51,35 @@ options:
   -s STRINGS [STRINGS ...], --strings STRINGS [STRINGS ...]
                         Provide a list of strings separated by spaces.
 ```
- 
-## Example 
+
+## Example
+
 It is recommended to run a check of all modules with the `-c` (`--check`) option before using the program for its intended purpose, as the services may have changed their work logic since the code was published this, in turn,  may require  some corrections  in the module code.
- 
+
 To get a list of available modules, run the program with the `-l` (`--list`) parameter.
 
 The utility can generate a list of words based on your input, such as a list of sites: `python app.py -g google.com domains.google`
 Output:
-```
+
+```bash
 google-com youtube.com youtube google_com googlecom youtubecom youtube_com youtube-com google.com google
 ```
- 
+
 A list of strings that will be used as parameters when calling the services must be prepared to use the tool. You can enumerate words with a space in the `-s` (`--string`) parameter or specify the path to a file in the `-w` (`--wordlist`) parameter.
- 
+
 An example of how to run the program:
-```commandline
+
+```bash
 python app.py -s google logstash octocat
 python app.py -w wordlist.txt
 python app.py -s google.com -g
 ```
- 
+
 To gain a better understanding of the tool's workings, you can run the tool with the `-v` (`--verbose`) parameter. Running with the `-vv` parameter is only recommended for debugging purposes. A full list of available parameters can be accessed by calling the help using the `-h` (`--help`) option.
- 
- 
-### An example of the program's output:
-```
+
+### An example of the program's output
+
+```bash
 python app.py -s google logstash octocat
 ---------------  --------------------------------------------------
 AlibabaCloudS3   http://logstash.oss-cn-hangzhou.aliyuncs.com/
@@ -161,12 +167,13 @@ Zoho             https://google.wiki.zoho.com/
 Zoho             https://google.zohodesk.com/
 ---------------  --------------------------------------------------
 ```
- 
+
 ## List of modules
+
 - [x] Alibaba Cloud Object Storage
 - [x] Atlassian
 - [x] AWS S3 (Bucket, Website)
-- [x] Azure (Cloud, Container, BLOB, etc)
+- [x] Azure (Cloud, Container, BLOB, Tenants, etc)
 - [x] Bitbucket (Users/Company)
 - [x] Codeberg
 - [x] Deskpro
@@ -199,17 +206,16 @@ Zoho             https://google.zohodesk.com/
 - [x] Zendesk
 - [x] Zoho (Desk, Wiki)
 
- 
 ## Contributing
- 
+
 We welcome contributions from the community. If you want to contribute, please fork the repository and submit a pull request with your changes.
- 
+
 Please, refrain from making any modifications outside of the `modules` folder in the project. You can utilize three asynchronous functions to create tasks for target queries:
+
 - `async_requests(urls)` - a simple function that polls the URLs from the given list and returns a list of responses from the services;
 - `async_requests_over_datasets(datasets)` - where `datasets` is a dictionary where the key is the `UUID` of the request and the value is `the request parameters`. An example structure of `datasets` is: `{'UNIQUE-UUID': {'url': 'https://<company>.example.com/<project>', 'method': 'post', 'cookies': "{'key': 'value'}"}}`. This function returns a two-dimensional array consisting of the UUID of the original request and the response to the request;
 - `async_nslookup(domains)` - this function performs DNS lookups for a list of domains. It will return a simple list of domains for which an A record was successfully obtained.
- 
- 
+
 ## License
- 
+
 This project is released under the Apache License 2.0.

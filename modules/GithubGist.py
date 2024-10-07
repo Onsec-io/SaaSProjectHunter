@@ -42,7 +42,6 @@ def run(words):
         if 'Rate limit' in r.text:
             log.warning('{}: rate limit exceeded: {}'.format(get_name(), r.url))
         elif not "find any gists matching" in r.text:  # Counter--primary in response (html-code)
-            print(r.url)
             match = re.search(r'q=%22([^&]+)%22', str(r.url))  # extract value of param `q` from original URL
             if match.group(1) in words:
                 founded_projects.append('https://gist.github.com/search?q=%22{}%22'.format(match.group(1)))
