@@ -187,7 +187,10 @@ async def make_request(client, url, method, uuid=None, data=None, headers=None, 
 
             log.debug('Response status: {} ({})'.format(r.status_code, url))
             if r.status_code == 429:
-                log.warning('Too many requests - 429: {}. Please wait 5-15 seconds'.format(url))
+                log.warning('Too many requests (code: 429): {}. Please wait 5-15 seconds'.format(url))
+                return [uuid, url]
+            elif r.status_code == 503:
+                log.warning('Service unavailable (code: 503): {}. Please wait 5-15 seconds'.format(url))
                 return [uuid, url]
             return [uuid, r]
     except asyncio.CancelledError:

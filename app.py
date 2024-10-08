@@ -66,6 +66,7 @@ def main():
             utils.check_all_proxies_sync()
         log.info('Check modules...')
         utils.check_modules(load_modules(args.module, args.tag))
+        print('Check completed')
         exit()
 
     if args.strings:
