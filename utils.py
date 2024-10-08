@@ -12,11 +12,15 @@ global header_useragent
 global verbose
 global limit_requests
 global proxies
+global tlds
 
 
 def init(args_verbose, args_threads, args_user_agent, args_limit_requests, args_proxies=None):
     global verbose
     verbose = args_verbose
+
+    global tlds
+    tlds = ['com', 'net', 'org', 'io', 'dev', 'tech', 'xyz', 'top', 'app', 'online']
 
     global limit
     limit = asyncio.Semaphore(value=int(args_threads))

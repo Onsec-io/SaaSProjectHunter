@@ -1,7 +1,7 @@
 import asyncio
 from utils import compile_url, async_requests
 import logger
-from utils import verbose
+from utils import verbose, tlds
 import xml.etree.ElementTree as ET
 log = logger.get_logger('logger')
 
@@ -11,7 +11,7 @@ def get_name():
 
 
 def get_version():
-    return '1.0'
+    return '1.1'
 
 
 def get_tags():
@@ -66,13 +66,13 @@ def run(words):
     log.debug('Checking the wordlist for requirements of {} module...'.format(get_name()))
     words = [item.lower() for item in words]  # lowercase
     domains = []
-    for word in words:
-        if '.' not in word:
-            domains.extend(f"{word}.{domain}" for domain in ['com', 'net', 'org', 'io', 'dev', 'tech'])
-        elif '_' not in word:
-            domains.append(word)
+    for item in words:
+        if '_' in item:
+            item.replace('_', '.')
+        if '.' not in item or not any(item.endswith(f'.{tld}') for tld in tlds):
+            domains.extend(f"{item}.{domain}" for domain in tlds)
         else:
-            domains.append(word.replace('_', '.', word))
+            domains.append(item)
     domains = list(set(domains))  # remove duplicates
 
     # urls = "https://login.microsoftonline.com/{domain}/v2.0/.well-known/openid-configuration"

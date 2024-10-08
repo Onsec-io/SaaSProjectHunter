@@ -1,7 +1,7 @@
 import asyncio
 from utils import compile_url, async_requests
 import logger
-from utils import verbose
+from utils import verbose, tlds
 import xml.etree.ElementTree as ET
 log = logger.get_logger('logger')
 
@@ -11,7 +11,7 @@ def get_name():
 
 
 def get_version():
-    return '1.0'
+    return '1.1'
 
 
 def get_tags():
@@ -32,8 +32,15 @@ def wordslist_for_check_module():
 def run(words):
     founded_projects = []
     log.debug('Checking the wordlist for requirements of {} module...'.format(get_name()))
-    words = [item.lower() for item in words]  # lowercase
-    urls = compile_url('crt.sh/?output=json&q=', words)
+    domains = []
+    for item in words:
+        if '_' in item:
+            item.replace('_', '.')
+        if '.' not in item or not any(item.endswith(f'.{tld}') for tld in tlds):
+            domains.extend(f"{item}.{domain}" for domain in tlds)
+        else:
+            domains.append(item)
+    urls = compile_url('crt.sh/?output=json&q=', domains)
     log.debug('Compiled {} urls for request ({})'.format(len(urls), get_name()))
     log.debug('Run requests...')
     loop = asyncio.get_event_loop()
