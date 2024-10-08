@@ -175,6 +175,7 @@ Zoho             https://google.zohodesk.com/
 - [x] AWS S3 (Bucket, Website)
 - [x] Azure (Cloud, Container, BLOB, Tenants, etc)
 - [x] Bitbucket (Users/Company)
+- [x] crt.sh (domains and words)
 - [x] Codeberg
 - [x] Deskpro
 - [x] DigitalOcean Spaces Object Storage
