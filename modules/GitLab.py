@@ -35,7 +35,6 @@ def run(words):
     for word in words:
         patches.append('/groups/{}/-/children.json'.format(word))
         patches.append('/users/{}/calendar.json'.format(word))
-        # patches.append('/explore?name={}'.format(word))  # Error 429 after more requests (
 
     urls = compile_url('gitlab.com', patches)
     log.debug('Run requests...')

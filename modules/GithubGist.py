@@ -10,7 +10,7 @@ def get_name():
 
 
 def get_version():
-    return '1.2'
+    return '1.3'
 
 
 def get_tags():
@@ -39,9 +39,7 @@ def run(words):
     loop = asyncio.get_event_loop()
     responses = loop.run_until_complete(async_requests(urls, method='get'))
     for r in responses:
-        if 'Rate limit' in r.text:
-            log.warning('{}: rate limit exceeded: {}'.format(get_name(), r.url))
-        elif not "find any gists matching" in r.text:  # Counter--primary in response (html-code)
+        if not "find any gists matching" in r.text:  # Counter--primary in response (html-code)
             match = re.search(r'q=%22([^&]+)%22', str(r.url))  # extract value of param `q` from original URL
             if match.group(1) in words:
                 founded_projects.append('https://gist.github.com/search?q=%22{}%22'.format(match.group(1)))

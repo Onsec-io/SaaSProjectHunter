@@ -11,7 +11,7 @@ def get_name():
 
 
 def get_version():
-    return '1.1'
+    return '1.2'
 
 
 def get_tags():
@@ -24,7 +24,7 @@ def get_description():
 
 def wordslist_for_check_module():
     return {
-        'real': ['wallarm.com', 'chatgpt.com', 'google'],
+        'real': ['wallarm', 'chatgpt.com', 'google'],
         'fake': ['micraaaaaarverv34', 'uenrf348', 'sde2d23A']
     }
 

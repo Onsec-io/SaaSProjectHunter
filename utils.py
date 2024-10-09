@@ -1,3 +1,4 @@
+import time
 import asyncio
 import random
 import httpx
@@ -13,14 +14,13 @@ global verbose
 global limit_requests
 global proxies
 global tlds
+global auto_resend
+global auto_resend_counter
 
 
-def init(args_verbose, args_threads, args_user_agent, args_limit_requests, args_proxies=None):
+def init(args_verbose, args_threads, args_user_agent, args_limit_requests, args_proxies=None, args_tld=None, args_auto_resend=None):
     global verbose
     verbose = args_verbose
-
-    global tlds
-    tlds = ['com', 'net', 'org', 'io', 'dev', 'tech', 'xyz', 'top', 'app', 'online']
 
     global limit
     limit = asyncio.Semaphore(value=int(args_threads))
@@ -40,6 +40,17 @@ def init(args_verbose, args_threads, args_user_agent, args_limit_requests, args_
                 exit()
         log.info('Number of proxies loaded: {}'.format(len(args_proxies)))
     proxies = args_proxies
+
+    global tlds
+    tlds = ['com', 'net', 'org', 'io', 'dev', 'tech', 'xyz', 'top', 'app', 'online']
+    if args_tld:
+        for tld in args_tld.split(','):
+            if tld not in tlds:
+                tlds.append(tld)
+        print('Added new TLDs. Result: {}'.format(', '.join(tlds)))
+
+    global auto_resend
+    auto_resend = args_auto_resend
 
 
 def get_proxy(num=None):
@@ -155,8 +166,11 @@ async def async_nslookup(domains):
 
     def signal_handler(sig, frame):
         log.warning('Current running module has been cancelled')
-        for current_task in tasks:
-            current_task.cancel()
+        if auto_resend:
+            exit(0)
+        else:
+            for current_task in tasks:
+                current_task.cancel()
 
     signal.signal(signal.SIGINT, signal_handler)
 
@@ -201,7 +215,7 @@ async def make_request(client, url, method, uuid=None, data=None, headers=None, 
         log.debug('Cancelled request to: {}'.format(url))
         return [uuid, url]
     except (httpx.ConnectError, httpx.ConnectTimeout, httpx.ReadTimeout, httpx.ReadError, httpx.LocalProtocolError, httpx.RemoteProtocolError):
-        log.error('Error connect to {}...'.format(url))
+        log.warning('Error connect to {}...'.format(url))
         return [uuid, url]
 
 
@@ -215,6 +229,7 @@ async def perform_request(client, url, method, data, headers, cookies):
 
 
 async def async_requests(urls, method='head', http2=True, additional_headers=None):
+    global auto_resend_counter
     if additional_headers:
         headers = {**header_useragent, **additional_headers}  # merge two dict: useragent and additional headers
     else:
@@ -229,8 +244,11 @@ async def async_requests(urls, method='head', http2=True, additional_headers=Non
 
     def signal_handler(sig, frame):
         log.warning('Current running module has been cancelled')
-        for current_task in tasks:
-            current_task.cancel()
+        if auto_resend:
+            exit(0)
+        else:
+            for current_task in tasks:
+                current_task.cancel()
 
     signal.signal(signal.SIGINT, signal_handler)
 
@@ -250,7 +268,15 @@ async def async_requests(urls, method='head', http2=True, additional_headers=Non
             completed_responses.append(r)
 
     if len(recheck) > 0:
-        if wait_user_input() != 'pass':
+        if auto_resend:
+            auto_resend_counter += 1
+            if auto_resend_counter > 5:
+                log.error('Too many auto-resend attempts. Exit...')
+                return completed_responses
+            print(f"Auto-resend enabled. Resending requests after {auto_resend}s...")
+            time.sleep(auto_resend)
+            recheck_responses = await async_requests(recheck, method=method, http2=http2, additional_headers=additional_headers)
+        elif wait_user_input() != 'pass':
             recheck_responses = await async_requests(recheck, method=method, http2=http2, additional_headers=additional_headers)
 
     completed_responses.extend(recheck_responses)
@@ -258,6 +284,7 @@ async def async_requests(urls, method='head', http2=True, additional_headers=Non
 
 
 async def async_requests_over_datasets(datasets, http2=True):
+    global auto_resend_counter
     tasks = []
     # example `dataset`: {'UNIQUE-UUID': {'url': 'https://<company>.example.com/<project>', 'method': 'post', 'cookies': "{'key': 'value'}"}}
     method = 'head'
@@ -292,8 +319,11 @@ async def async_requests_over_datasets(datasets, http2=True):
 
     def signal_handler(sig, frame):
         log.warning('Current running module has been cancelled')
-        for current_task in tasks:
-            current_task.cancel()
+        if auto_resend:
+            exit(0)
+        else:
+            for current_task in tasks:
+                current_task.cancel()
 
     signal.signal(signal.SIGINT, signal_handler)
 
@@ -309,7 +339,15 @@ async def async_requests_over_datasets(datasets, http2=True):
             completed_responses.append([uuid, r])
 
     if len(recheck) > 0:
-        if wait_user_input() != 'pass':
+        if auto_resend:
+            auto_resend_counter += 1
+            if auto_resend_counter > 5:
+                log.error('Too many auto-resend attempts. Exit...')
+                return completed_responses
+            print(f"Auto-resend enabled. Resending requests after {auto_resend}s...")
+            time.sleep(auto_resend)
+            recheck_responses = await async_requests_over_datasets(recheck, http2=http2)
+        elif wait_user_input() != 'pass':
             recheck_responses = await async_requests_over_datasets(recheck, http2=http2)
 
     completed_responses.extend(recheck_responses)
@@ -384,4 +422,6 @@ def run_check_module(module):
 
 def check_modules(modules):
     for m in modules:
+        global auto_resend_counter
+        auto_resend_counter = 0
         run_check_module(m)
