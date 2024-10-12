@@ -118,6 +118,7 @@ def main():
         for url in module.run(words):
             output.append([module.get_name(), url])
     print(tabulate(output))
+    print('Found {} results'.format(len(output)))
 
 
 print("SaaSProjectHunter (developed by ONSEC.io)\n")

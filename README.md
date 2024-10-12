@@ -175,8 +175,8 @@ Zoho             https://google.zohodesk.com/
 - [x] AWS S3 (Bucket, Website)
 - [x] Azure (Cloud, Container, BLOB, Tenants, etc)
 - [x] Bitbucket (Users/Company)
-- [x] crt.sh (domains and words)
 - [x] Codeberg
+- [x] crt.sh (Domains, Search)
 - [x] Deskpro
 - [x] DigitalOcean Spaces Object Storage
 - [x] DockerHub (Users, Search)
@@ -196,6 +196,7 @@ Zoho             https://google.zohodesk.com/
 - [x] Postman (Users, Search)
 - [x] ReadTheDocs
 - [x] Recruitee
+- [x] RunKit (Packages, Notebooks, Users)
 - [x] Salesforce
 - [x] Scaleway Object Storage
 - [x] SearchCode
@@ -215,7 +216,8 @@ Please, refrain from making any modifications outside of the `modules` folder in
 
 - `async_requests(urls)` - a simple function that polls the URLs from the given list and returns a list of responses from the services;
 - `async_requests_over_datasets(datasets)` - where `datasets` is a dictionary where the key is the `UUID` of the request and the value is `the request parameters`. An example structure of `datasets` is: `{'UNIQUE-UUID': {'url': 'https://<company>.example.com/<project>', 'method': 'post', 'cookies': "{'key': 'value'}"}}`. This function returns a two-dimensional array consisting of the UUID of the original request and the response to the request;
-- `async_nslookup(domains)` - this function performs DNS lookups for a list of domains. It will return a simple list of domains for which an A record was successfully obtained.
+- `async_nslookup(domains)` - this function performs DNS lookups for a list of domains. It will return a simple list of domains for which an A record was successfully obtained;
+- `async_websocket(url, messages=[])` - this function establishes a websocket session, sends messages and return responses.
 
 ## License
 

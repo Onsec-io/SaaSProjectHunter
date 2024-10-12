@@ -9,7 +9,7 @@ def get_name():
 
 
 def get_version():
-    return '1.0'
+    return '1.1'
 
 
 def get_tags():
@@ -30,9 +30,9 @@ def wordslist_for_check_module():
 def run(words):
     log.debug('Checking the wordlist for requirements of {} module...'.format(get_name()))
     words = [item.lower() for item in words]
-    urls = compile_url('api.npms.io/v2/search?q=scope:', words)
-    urls += compile_url('api.npms.io/v2/search?q=author:', words)
-    urls += compile_url('api.npms.io/v2/search?q=', words)
+    urls = compile_url('api.npms.io/v2/search?q=', words)
+    # urls += compile_url('api.npms.io/v2/search?q=author:', words)
+    # urls += compile_url('api.npms.io/v2/search?q=scope:', words)
     log.debug('Run requests...')
     loop = asyncio.get_event_loop()
     responses = loop.run_until_complete(async_requests(urls, method='GET'))

@@ -420,6 +420,25 @@ def run_check_module(module):
         log.error('Failed check module {} v{}!'.format(module.get_name(), module.get_version()))
 
 
+async def async_websocket(url, messages=[]):
+    import httpx
+    from httpx_ws import aconnect_ws
+    responses = []
+    log.info('Connect to websocket: {}'.format(url))
+    async with httpx.AsyncClient() as client:
+        async with aconnect_ws(url, client) as ws:
+            status = await ws.receive_text()
+            log.debug(status)
+            if len(messages) == 0:
+                return status
+            for m in messages:
+                await ws.send_text(m)
+                responses.append(await ws.receive_text())
+    log.debug(responses)
+    log.debug('Websocket closed')
+    return responses
+
+
 def check_modules(modules):
     for m in modules:
         global auto_resend_counter

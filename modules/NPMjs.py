@@ -9,7 +9,7 @@ def get_name():
 
 
 def get_version():
-    return '1.0'
+    return '1.1'
 
 
 def get_tags():
@@ -32,9 +32,10 @@ def run(words):
     words = [item.lower() for item in words]
     urls = compile_url('www.npmjs.com/~', words)
     urls += compile_url('www.npmjs.com/package/', words)
+    urls += compile_url('www.npmjs.com/search/suggestions?q=', words)
     log.debug('Run requests...')
     loop = asyncio.get_event_loop()
-    responses = loop.run_until_complete(async_requests(urls))
-    founded_projects = [str(r.url) for r in responses if r.status_code == 200]
+    responses = loop.run_until_complete(async_requests(urls, method='GET'))
+    founded_projects = [str(r.url) for r in responses if r.status_code == 200 and r.text != '[]']
     log.info('{}: founded {} sites'.format(get_name(), len(founded_projects)))
     return founded_projects
