@@ -181,7 +181,6 @@ async def async_nslookup(domains):
     return responses
 
 
-
 async def make_request(client, url, method, uuid=None, data=None, headers=None, cookies=None):
     try:
         async with limit:
