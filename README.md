@@ -170,6 +170,7 @@ Zoho             https://google.zohodesk.com/
 
 ## List of modules
 
+- [x] 3CX
 - [x] Alibaba Cloud Object Storage
 - [x] Atlassian
 - [x] AWS S3 (Bucket, Website)
@@ -181,6 +182,7 @@ Zoho             https://google.zohodesk.com/
 - [x] DigitalOcean Spaces Object Storage
 - [x] DockerHub (Users, Search)
 - [x] GetOutline
+- [x] GhostIO (blogs on ghost.io)
 - [x] Github (Users, Search)
 - [x] Github Gist (gist.github.com)
 - [x] Github Pages (github.io)
