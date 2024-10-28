@@ -6,6 +6,7 @@ hpack
 httpcore
 httpx
 httpx[socks]
+httpx_ws
 hyperframe
 idna
 rfc3986
