@@ -23,11 +23,14 @@ def load_wordlist(path_to_file):
     return words
 
 
-def load_modules(name=False, tag=None):
+def load_modules(name=False, tag=None, exclude_modules=None):
     folder = 'modules'
     if not os.path.exists(folder) or not os.path.isdir(folder):
         log.error('Folder of modules not found!')
         exit()
+    
+    if exclude_modules:
+        log.debug('Excluding modules {}...'.format(', '.join(exclude_modules)))
 
     modules = []
     if name:
@@ -43,6 +46,8 @@ def load_modules(name=False, tag=None):
             if file == '__init__.py' or file[-3:] != '.py':
                 continue
             module_name = file[:-3]
+            if exclude_modules and module_name in exclude_modules:
+                continue
             log.debug('Import {}...'.format(module_name))
             module = importlib.import_module(f'{folder}.{module_name}')
             if not tag or tag in module.get_tags():
@@ -108,7 +113,7 @@ def main():
         log.info('Number of lines after applying postfix: {}'.format(len(words)))
 
     log.debug('Loading modules...')
-    modules = load_modules(args.module, args.tag)
+    modules = load_modules(args.module, args.tag, args.exclude)
     log.info('Number of loaded modules: {}'.format(len(modules)))
 
     output = []
@@ -126,6 +131,7 @@ parser = argparse.ArgumentParser(description='Example usage: python3 app.py -s g
 
 parser.add_argument('-g', '--generator', nargs='*', help='Apply a generator to the wordlist.')
 parser.add_argument('-m', '--module', action='store', type=str, default=False, help='Specify the module name to run or check.')
+parser.add_argument('-x', '--exclude', nargs='*', help='Specify the module names to exclude from the run.')
 parser.add_argument('-t', '--threads', default=int(os.cpu_count()) * 2, type=int, help='Set the number of concurrent threads. Defaults to twice the number of CPU cores.')
 parser.add_argument('-u', '--user-agent', default='Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/118.0', help='Set the User-Agent string for HTTP requests.')
 parser.add_argument('-a', '--auto-resend', type=int, default=None, help='Automatically resend requests after N second.')

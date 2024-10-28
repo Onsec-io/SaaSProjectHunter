@@ -23,7 +23,7 @@ python3 app.py --help
 
 SaaSProjectHunter (developed by ONSEC.io)
 
-usage: app.py [-h] [-g [GENERATOR ...]] [-m MODULE] [-t THREADS] [-u USER_AGENT] [-v] [-nc] [-p POSTFIX] [--limit LIMIT] [--proxies PROXIES] [--tag TAG] [-l | -c] [-w WORDLIST | -s STRINGS [STRINGS ...]]
+usage: app.py [-h] [-g [GENERATOR ...]] [-m MODULE] [-x [EXCLUDE ...]] [-t THREADS] [-u USER_AGENT] [-a AUTO_RESEND] [-v] [-nc] [-p POSTFIX] [--tld TLD] [--limit LIMIT] [--proxies PROXIES] [--tag TAG] [-l | -c] [-w WORDLIST | -s STRINGS [STRINGS ...]]
 
 Example usage: python3 app.py -s google logstash octocat -v
 
@@ -33,14 +33,19 @@ options:
                         Apply a generator to the wordlist.
   -m MODULE, --module MODULE
                         Specify the module name to run or check.
+  -x [EXCLUDE ...], --exclude [EXCLUDE ...]
+                        Specify the module names to exclude from the run.
   -t THREADS, --threads THREADS
                         Set the number of concurrent threads. Defaults to twice the number of CPU cores.
   -u USER_AGENT, --user-agent USER_AGENT
                         Set the User-Agent string for HTTP requests.
+  -a AUTO_RESEND, --auto-resend AUTO_RESEND
+                        Automatically resend requests after N second.
   -v, --verbose         Increase output verbosity (e.g., -v for verbose, -vv for more verbose).
   -nc, --no-color       Disable colored output.
   -p POSTFIX, --postfix POSTFIX
                         Specify the file path for postfixes.
+  --tld TLD             Add regional/country/specific top-level domains. Example: --tld co,kz,ru. Default: com,net,org,io,dev,tech,xyz,top,app,online
   --limit LIMIT         Set the maximum number of requests per module.
   --proxies PROXIES     Specify the file path for HTTP/SOCKS proxies.
   --tag TAG             Specify the tag for run only specific modules.
