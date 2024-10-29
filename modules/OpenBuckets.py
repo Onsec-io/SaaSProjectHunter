@@ -40,7 +40,7 @@ def run(words):
     log.debug('Compiled {} urls for request ({})'.format(len(urls), get_name()))
     log.debug('Run requests...')
     loop = asyncio.get_event_loop()
-    headers = {'Accept': 'application/json', 'Referer': 'https://www.openbuckets.io/'}
+    headers = {'Referer': 'https://www.openbuckets.io/'}
     responses = loop.run_until_complete(async_requests(urls, method='get', additional_headers=headers))
     for r in responses:
         if r.status_code == 200:

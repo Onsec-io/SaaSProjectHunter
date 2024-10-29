@@ -371,7 +371,7 @@ def compile_subdomain(url, words, proto='https://'):
 
 def compile_url(url, paths, proto='https://'):
     paths = [item.strip() for item in paths]  # delete spaces\newline
-    paths = [item.lower() for item in paths]  # lowercase
+    # paths = [item.lower() for item in paths]  # lowercase
     paths = list(set(paths))  # remove doubles
     log.debug('Size of wordlist: {}'.format(len(paths)))
     urls = ['{}{}{}'.format(proto, url, p) for p in paths]
