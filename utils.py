@@ -35,9 +35,10 @@ def init(args_verbose, args_threads, args_user_agent, args_limit_requests, args_
     if args_proxies:
         log.info('Loading proxies...')
         for p in args_proxies:
+            if p.startswith('#'):
+                continue
             if not p.startswith('http://') and not p.startswith('https://') and not p.startswith('socks://'):
                 log.error('Invalid proxy: {}'.format(p))
-                exit()
         log.info('Number of proxies loaded: {}'.format(len(args_proxies)))
     proxies = args_proxies
 
