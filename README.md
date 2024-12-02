@@ -198,7 +198,6 @@ Zoho             https://google.zohodesk.com/
 - [x] Kayako
 - [x] Linode Object Storage
 - [x] NPMjs (Packages, Users, Search)
-- [x] OpenBuckets.io (buckets and files)
 - [x] OVH Cloud Object Storage
 - [x] Postman (Users, Search)
 - [x] ReadTheDocs
