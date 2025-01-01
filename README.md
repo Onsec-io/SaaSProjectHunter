@@ -182,7 +182,7 @@ Zoho             https://google.zohodesk.com/
 - [x] Azure (Cloud, Container, BLOB, Tenants, etc)
 - [x] Bitbucket (Users/Company)
 - [x] Codeberg
-- [x] crt.sh (Domains, Search)
+- [ ] crt.sh (Domains, Search)
 - [x] Deskpro
 - [x] DigitalOcean Spaces Object Storage
 - [x] DockerHub (Users, Search)

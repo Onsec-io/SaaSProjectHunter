@@ -403,7 +403,7 @@ def run_check_module(module):
         found_projects = set()
         for source_str in result:
             for check_str in real_projects:
-                if check_str.lower() in source_str.lower():
+                if check_str.lower() in source_str.lower().replace('%20', ' '):
                     found_projects.add(check_str)
         if len(found_projects) == len(real_projects):
             log.info('>> All real projects found')
