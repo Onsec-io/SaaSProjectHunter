@@ -9,7 +9,7 @@ def get_name():
 
 
 def get_version():
-    return '1.2'
+    return '1.3'
 
 
 def get_tags():
@@ -22,7 +22,7 @@ def get_description():
 
 def wordslist_for_check_module():
     return {
-        'real': ['coodash', 'admin', 'mhraproducts4853'],
+        'real': ['abspwshare01', 'admin', 'mhraproducts4853'],
         'fake': ['8457fj20d', 'uenrf348', '8rurur8ud']
     }
 

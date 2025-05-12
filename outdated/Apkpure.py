@@ -9,7 +9,7 @@ def get_name():
 
 
 def get_version():
-    return '1.1'
+    return '1.2'
 
 
 def get_tags():
@@ -30,11 +30,11 @@ def wordslist_for_check_module():
 def run(words):
     log.debug('Checking the wordlist for requirements of {} module...'.format(get_name()))
     words = list(set([item.lower() for item in words]))  # lowercase and remove doubles
-    urls = compile_url('apkpure.net/api/v1/search_suggestion_new?limit=1&key=', [f'{item.lower()}' for item in words])
-    urls += compile_url('apkpure.net/developer/', [item.upper() for item in words])
+    urls = compile_url('apkpure.com/api/v1/search_suggestion_new?limit=1&key=', [f'{item.lower()}' for item in words])
+    urls += compile_url('apkpure.com/developer/', [item.upper() for item in words])
     log.debug('Run requests...')
     loop = asyncio.get_event_loop()
-    responses = loop.run_until_complete(async_requests(urls, method='HEAD', http2=False))
+    responses = loop.run_until_complete(async_requests(urls, method='GET', http2=False))
     founded_projects = []
     for r in responses:
         if (r.status_code == 200 and not r.headers.get('Content-Length', None)) or (r.headers.get('Content-Length') == 2):

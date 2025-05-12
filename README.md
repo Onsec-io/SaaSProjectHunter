@@ -178,11 +178,12 @@ Zoho             https://google.zohodesk.com/
 - [x] 3CX
 - [x] Alibaba Cloud Object Storage
 - [x] Atlassian
+- [x] APK Aggregators (APKCombo, ~~Apkpure~~)
 - [x] AWS S3 (Bucket, Website)
 - [x] Azure (Cloud, Container, BLOB, Tenants, etc)
 - [x] Bitbucket (Users/Company)
 - [x] Codeberg
-- [ ] crt.sh (Domains, Search)
+- [x] crt.sh (Domains, Search)
 - [x] Deskpro
 - [x] DigitalOcean Spaces Object Storage
 - [x] DockerHub (Users, Search)
@@ -199,10 +200,11 @@ Zoho             https://google.zohodesk.com/
 - [x] Linode Object Storage
 - [x] NPMjs (Packages, Users, Search)
 - [x] OVH Cloud Object Storage
+- [x] ownCloud
 - [x] Postman (Users, Search)
 - [x] ReadTheDocs
 - [x] Recruitee
-- [x] RunKit (Packages, Notebooks, Users)
+- [x] ~~RunKit (Packages, Notebooks, Users)~~
 - [x] Salesforce
 - [x] Scaleway Object Storage
 - [x] SearchCode
@@ -210,6 +212,7 @@ Zoho             https://google.zohodesk.com/
 - [x] SwaggerHub (Users, Query)
 - [x] Tilda
 - [x] Vultr Object Storage
+- [x] Yandex Object Storage
 - [x] Youtrack
 - [x] Zendesk
 - [x] Zoho (Desk, Wiki)

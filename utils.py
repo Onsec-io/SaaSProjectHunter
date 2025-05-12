@@ -403,7 +403,7 @@ def run_check_module(module):
         found_projects = set()
         for source_str in result:
             for check_str in real_projects:
-                if check_str.lower() in source_str.lower().replace('%20', ' '):
+                if check_str.lower() in str(source_str).lower().replace('%20', ' '):
                     found_projects.add(check_str)
         if len(found_projects) == len(real_projects):
             log.info('>> All real projects found')
@@ -426,7 +426,7 @@ async def async_websocket(url, messages=[]):
     from httpx_ws import aconnect_ws
     responses = []
     log.info('Connect to websocket: {}'.format(url))
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(timeout=5.0) as client:
         async with aconnect_ws(url, client) as ws:
             status = await ws.receive_text()
             log.debug(status)

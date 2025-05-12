@@ -9,7 +9,7 @@ def get_name():
 
 
 def get_version():
-    return '1.2'
+    return '1.3'
 
 
 def get_tags():
@@ -17,7 +17,7 @@ def get_tags():
 
 
 def get_description():
-    return 'This module uses URL path enumeration at https://apkcombo.app/[search,developer]/<path> to search for apps and games (apk files)'
+    return 'This module uses URL path enumeration at https://apkcombo.com/[search,developer]/<path> to search for apps and games (apk files)'
 
 
 def wordslist_for_check_module():
@@ -31,8 +31,8 @@ def run(words):
     founded_projects = []
     headers = {'Accept-Encoding': ''}
     log.debug('Checking the wordlist for requirements of {} module...'.format(get_name()))
-    words = list(set(['"' + item.lower() + '"' for item in words]))
-    urls = compile_url('apkcombo.app/search/', words)
+    words = list(set(['%22' + item.lower() + '%22' for item in words]))
+    urls = compile_url('apkcombo.com/search/', words)
     log.debug('Run requests...')
     loop = asyncio.get_event_loop()
     responses = loop.run_until_complete(async_requests(urls, method='GET', additional_headers=headers))
