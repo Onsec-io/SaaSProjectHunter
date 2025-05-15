@@ -177,8 +177,8 @@ Zoho             https://google.zohodesk.com/
 
 - [x] 3CX
 - [x] Alibaba Cloud Object Storage
-- [x] Atlassian
 - [x] APK Aggregators (APKCombo, ~~Apkpure~~)
+- [x] Atlassian
 - [x] AWS S3 (Bucket, Website)
 - [x] Azure (Cloud, Container, BLOB, Tenants, etc)
 - [x] Bitbucket (Users/Company)
@@ -187,6 +187,7 @@ Zoho             https://google.zohodesk.com/
 - [x] Deskpro
 - [x] DigitalOcean Spaces Object Storage
 - [x] DockerHub (Users, Search)
+- [x] Forager from TruffleSecurity
 - [x] GetOutline
 - [x] GhostIO (blogs on ghost.io)
 - [x] Github (Users, Search)
@@ -204,7 +205,6 @@ Zoho             https://google.zohodesk.com/
 - [x] Postman (Users, Search)
 - [x] ReadTheDocs
 - [x] Recruitee
-- [x] ~~RunKit (Packages, Notebooks, Users)~~
 - [x] Salesforce
 - [x] Scaleway Object Storage
 - [x] SearchCode
@@ -216,6 +216,7 @@ Zoho             https://google.zohodesk.com/
 - [x] Youtrack
 - [x] Zendesk
 - [x] Zoho (Desk, Wiki)
+- [x] ~~RunKit (Packages, Notebooks, Users)~~
 
 ## Contributing
 
