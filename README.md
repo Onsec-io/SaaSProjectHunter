@@ -188,6 +188,7 @@ Zoho             https://google.zohodesk.com/
 - [x] DigitalOcean Spaces Object Storage
 - [x] DockerHub (Users, Search)
 - [x] Forager from TruffleSecurity
+- [X] Force.com
 - [x] GetOutline
 - [x] GhostIO (blogs on ghost.io)
 - [x] Github (Users, Search)
@@ -196,6 +197,8 @@ Zoho             https://google.zohodesk.com/
 - [x] GitLab (Users, Groups)
 - [x] Google Cloud Storage Buckets
 - [x] GrayhatWarfare (buckets.grayhatwarfare.com)
+- [X] Greenhouse.io
+- [X] Helpjuice.com
 - [x] JIRA
 - [x] Kayako
 - [x] Linode Object Storage

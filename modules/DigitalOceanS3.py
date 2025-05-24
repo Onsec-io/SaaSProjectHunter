@@ -9,7 +9,7 @@ def get_name():
 
 
 def get_version():
-    return '1.0'
+    return '1.1'
 
 
 def get_tags():
@@ -34,14 +34,16 @@ def run(words):
     # https://docs.digitalocean.com/products/spaces/details/availability/
     endpoints = [
         # 'nyc1.digitaloceanspaces.com',
+        # 'nyc2.digitaloceanspaces.com',
         'nyc3.digitaloceanspaces.com',
         'ams3.digitaloceanspaces.com',
+        'sfo2.digitaloceanspaces.com',
         'sfo3.digitaloceanspaces.com',
         'sgp1.digitaloceanspaces.com',
-        # 'lon1.digitaloceanspaces.com',
+        'lon1.digitaloceanspaces.com',
         'fra1.digitaloceanspaces.com',
-        # 'tor1.digitaloceanspaces.com',
-        # 'blr1.digitaloceanspaces.com',
+        'tor1.digitaloceanspaces.com',
+        'blr1.digitaloceanspaces.com',
         'syd1.digitaloceanspaces.com',
     ]
 

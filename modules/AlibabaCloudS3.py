@@ -11,7 +11,7 @@ def get_name():
 
 
 def get_version():
-    return '1.0'
+    return '1.2'
 
 
 def get_tags():
@@ -68,6 +68,7 @@ def run(words):
 def random_endpoint():
     # https://www.alibabacloud.com/help/en/object-storage-service/latest/regions-and-endpoints
     endpoints = [
+        # Asia Pacific
         'oss-cn-hangzhou.aliyuncs.com',
         'oss-cn-shanghai.aliyuncs.com',
         'oss-cn-nanjing.aliyuncs.com',
@@ -86,14 +87,18 @@ def random_endpoint():
         'oss-ap-northeast-1.aliyuncs.com',
         'oss-ap-northeast-2.aliyuncs.com',
         'oss-ap-southeast-1.aliyuncs.com',
-        'oss-ap-southeast-2.aliyuncs.com',
         'oss-ap-southeast-3.aliyuncs.com',
         'oss-ap-southeast-5.aliyuncs.com',
         'oss-ap-southeast-6.aliyuncs.com',
         'oss-ap-southeast-7.aliyuncs.com',
-        'oss-ap-south-1.aliyuncs.com',
+        # Europe and Americas
         'oss-eu-central-1.aliyuncs.com',
         'oss-eu-west-1.aliyuncs.com',
+        'oss-us-west-1.aliyuncs.com',
+        'oss-us-east-1.aliyuncs.com',
+        'oss-na-south-1.aliyuncs.com',
+        # Middle East
         'oss-me-east-1.aliyuncs.com',
+        'oss-me-central-1.aliyuncs.com',
     ]
     return random.choice(endpoints)
