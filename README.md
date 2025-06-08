@@ -183,6 +183,7 @@ Zoho             https://google.zohodesk.com/
 - [x] Azure (Cloud, Container, BLOB, Tenants, etc)
 - [x] BambooHR
 - [x] Bitbucket (Users/Company)
+- [x] breezy.hr
 - [x] Codeberg
 - [x] crt.sh (Domains, Search)
 - [x] Deskpro
@@ -210,6 +211,7 @@ Zoho             https://google.zohodesk.com/
 - [x] Postman (Users, Search)
 - [x] ReadTheDocs
 - [x] Recruitee
+- [x] Lever (lever.co)
 - [x] Salesforce
 - [x] Scaleway Object Storage
 - [x] SearchCode
