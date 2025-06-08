@@ -32,7 +32,6 @@ def run(words):
     domains = []
     for endpoint in endpoints():
         domains.extend(compile_subdomain(endpoint, words, proto=''))
-    log.debug('Run requests...')
     loop = asyncio.get_event_loop()
     responses = loop.run_until_complete(async_nslookup(domains))
     founded_projects = ['https://{}'.format(domain) for domain in responses if domain is not None]

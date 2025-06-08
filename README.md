@@ -181,6 +181,7 @@ Zoho             https://google.zohodesk.com/
 - [x] Atlassian
 - [x] AWS S3 (Bucket, Website)
 - [x] Azure (Cloud, Container, BLOB, Tenants, etc)
+- [x] BambooHR
 - [x] Bitbucket (Users/Company)
 - [x] Codeberg
 - [x] crt.sh (Domains, Search)
@@ -202,9 +203,10 @@ Zoho             https://google.zohodesk.com/
 - [x] JIRA
 - [x] Kayako
 - [x] Linode Object Storage
+- [x] LiveChat (ladesk.com)
 - [x] NPMjs (Packages, Users, Search)
 - [x] OVH Cloud Object Storage
-- [x] ownCloud
+- [x] ~~ownCloud~~
 - [x] Postman (Users, Search)
 - [x] ReadTheDocs
 - [x] Recruitee

@@ -15,7 +15,7 @@ def get_version():
 
 
 def get_tags():
-    return ['azure', 'tenant', 'openid']
+    return ['azure', 'tenant', 'openid', 'nolimit']
 
 
 def get_description():
