@@ -5,11 +5,11 @@ log = logger.get_logger('logger')
 
 
 def get_name():
-    return 'NPMjs'
+    return 'Ashby'
 
 
 def get_version():
-    return '2.0'
+    return '1.0'
 
 
 def get_tags():
@@ -17,12 +17,12 @@ def get_tags():
 
 
 def get_description():
-    return 'This module uses registry.npmjs.org to find users and packages'
+    return 'This module uses bruteforce on jobs.ashbyhq.com to find open positions at companies'
 
 
 def wordslist_for_check_module():
     return {
-        'real': ['nodejs', 'nodejs-foundation', 'ljharb'],
+        'real': ['kikoff', 'airwallex', 'g2i'],
         'fake': ['8457fj20d', 'uenrf348', '8rurur8ud']
     }
 
@@ -30,10 +30,10 @@ def wordslist_for_check_module():
 def run(words):
     log.debug('Checking the wordlist for requirements of {} module...'.format(get_name()))
     words = [item.lower() for item in words]
-    urls = compile_url('registry.npmjs.org/-/v1/search?size=0&text=', words)
+    urls = compile_url('jobs.ashbyhq.com/', words)
     log.debug('Run requests...')
     loop = asyncio.get_event_loop()
-    responses = loop.run_until_complete(async_requests(urls, method='GET'))
-    founded_projects = [str(r.url) for r in responses if r.status_code == 200 and '"total":0,' not in r.text]
+    responses = loop.run_until_complete(async_requests(urls, method='HEAD'))
+    founded_projects = [str(r.url) for r in responses if r.status_code == 200 and r.headers['cf-cache-status'] != 'MISS']
     log.info('{}: founded {} sites'.format(get_name(), len(founded_projects)))
     return founded_projects

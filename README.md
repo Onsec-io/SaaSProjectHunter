@@ -177,53 +177,49 @@ Zoho             https://google.zohodesk.com/
 
 - [x] 3CX
 - [x] Alibaba Cloud Object Storage
-- [x] APK Aggregators (APKCombo, ~~Apkpure~~)
+- [x] Amazon S3 (Buckets, Websites)
+- [x] APK Aggregators (APKCombo)
+- [x] Ashby
 - [x] Atlassian
-- [x] AWS S3 (Bucket, Website)
-- [x] Azure (Cloud, Container, BLOB, Tenants, etc)
+- [x] Azure (Cloud, Storage, Tenants)
 - [x] BambooHR
-- [x] Bitbucket (Users/Company)
-- [x] breezy.hr
-- [x] Codeberg
-- [x] crt.sh (Domains, Search)
+- [x] Bitbucket (Users, Companies)
+- [x] Breezy.hr
 - [x] Deskpro
-- [x] DigitalOcean Spaces Object Storage
+- [x] DigitalOcean Spaces
 - [x] DockerHub (Users, Search)
-- [x] Forager from TruffleSecurity
-- [X] Force.com
+- [x] Force.com
 - [x] GetOutline
-- [x] GhostIO (blogs on ghost.io)
-- [x] Github (Users, Search)
-- [x] Github Gist (gist.github.com)
-- [x] Github Pages (github.io)
+- [x] GhostIO (ghost.io blogs)
+- [x] GitHub (Users, Search, Pages)
+- [x] GitHub Gist (gist.github.com)
 - [x] GitLab (Users, Groups)
 - [x] Google Cloud Storage Buckets
-- [x] GrayhatWarfare (buckets.grayhatwarfare.com)
-- [X] Greenhouse.io
-- [X] Helpjuice.com
+- [x] GrayhatWarfare (Open buckets/files)
+- [x] Greenhouse.io
+- [x] Helpjuice.com
 - [x] JIRA
 - [x] Kayako
+- [x] Lever (lever.co)
 - [x] Linode Object Storage
 - [x] LiveChat (ladesk.com)
-- [x] NPMjs (Packages, Users, Search)
+- [x] NPM (Registry, Users, Search)
 - [x] OVH Cloud Object Storage
-- [x] ~~ownCloud~~
 - [x] Postman (Users, Search)
 - [x] ReadTheDocs
 - [x] Recruitee
-- [x] Lever (lever.co)
 - [x] Salesforce
 - [x] Scaleway Object Storage
-- [x] SearchCode
 - [x] Slack
 - [x] SwaggerHub (Users, Query)
-- [x] Tilda
+- [x] Tilda (tilda.ws)
+- [x] TruffleSecurity (Forager)
 - [x] Vultr Object Storage
 - [x] Yandex Object Storage
-- [x] Youtrack
+- [x] YouTrack
 - [x] Zendesk
 - [x] Zoho (Desk, Wiki)
-- [x] ~~RunKit (Packages, Notebooks, Users)~~
+- [x] Testmo (testmo.net)
 
 ## Contributing
 
