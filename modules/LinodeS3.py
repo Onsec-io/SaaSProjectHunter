@@ -8,12 +8,8 @@ def get_name():
     return 'LinodeS3'
 
 
-def get_version():
-    return '1.0'
-
-
 def get_tags():
-    return ['s3', 'backet', 'subdomain', 'nolimit']
+    return ['s3', 'bucket', 'subdomain', 'nolimit']
 
 
 def get_description():

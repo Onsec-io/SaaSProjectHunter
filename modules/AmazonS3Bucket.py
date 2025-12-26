@@ -8,12 +8,8 @@ def get_name():
     return 'AmazonS3Bucket'
 
 
-def get_version():
-    return '1.2'
-
-
 def get_tags():
-    return ['s3', 'backet']
+    return ['s3', 'bucket']
 
 
 def get_description():

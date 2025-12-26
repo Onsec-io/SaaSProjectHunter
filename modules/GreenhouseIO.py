@@ -8,12 +8,8 @@ def get_name():
     return 'GreenhouseIO'
 
 
-def get_version():
-    return '1.0'
-
-
 def get_tags():
-    return []
+    return ['nolimit', 'hr']
 
 
 def get_description():
@@ -28,7 +24,6 @@ def wordslist_for_check_module():
 
 
 def run(words):
-    import re
     log.debug('Checking the wordlist for requirements of {} module...'.format(get_name()))
     words = list(set(item.lower() for item in words))  # lowercase and deduplicate
     urls = compile_url('boards-api.greenhouse.io/v1/boards/', words)

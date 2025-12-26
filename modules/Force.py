@@ -8,12 +8,8 @@ def get_name():
     return 'Force'
 
 
-def get_version():
-    return '1.0'
-
-
 def get_tags():
-    return ['subdomain']
+    return ['dns', 'nolimit', 'crm']
 
 
 def get_description():

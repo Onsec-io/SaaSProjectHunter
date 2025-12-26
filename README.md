@@ -173,53 +173,111 @@ Zoho             https://google.zohodesk.com/
 ---------------  --------------------------------------------------
 ```
 
-## List of modules
+## List of modules (81 total)
 
-- [x] 3CX
+### Cloud Storage
 - [x] Alibaba Cloud Object Storage
 - [x] Amazon S3 (Buckets, Websites)
-- [x] APK Aggregators (APKCombo)
-- [x] Ashby
-- [x] Atlassian
-- [x] Azure (Cloud, Storage, Tenants)
-- [x] BambooHR
-- [x] Bitbucket (Users, Companies)
-- [x] Breezy.hr
-- [x] Deskpro
+- [x] Azure Storage
 - [x] DigitalOcean Spaces
-- [x] DockerHub (Users, Search)
-- [x] Force.com
-- [x] GetOutline
+- [x] Google Cloud Storage Buckets
+- [x] Linode Object Storage
+- [x] OVH Cloud Object Storage
+- [x] Scaleway Object Storage
+- [x] Vultr Object Storage
+- [x] Yandex Object Storage
+
+### PaaS & Hosting
+- [x] Cloudflare Pages (pages.dev)
+- [x] Firebase (firebaseapp.com)
+- [x] Glitch (glitch.me)
+- [x] Heroku (herokuapp.com)
+- [x] Netlify (netlify.app)
+- [x] Pantheon (pantheonsite.io)
+- [x] Railway (up.railway.app)
+- [x] Render (onrender.com)
+- [x] Replit (replit.app)
+- [x] Vercel (vercel.app)
+
+### Website Builders & No-Code
+- [x] Bubble (bubbleapps.io)
+- [x] Carrd (carrd.co)
+- [x] Framer (framer.website)
 - [x] GhostIO (ghost.io blogs)
+- [x] Shopify (myshopify.com)
+- [x] Softr (softr.app)
+- [x] Tilda (tilda.ws)
+- [x] Webflow (webflow.io)
+- [x] Wordpress.com (wordpress.com)
+
+### Documentation & Knowledge Base
+- [x] Canny (canny.io)
+- [x] GitBook (gitbook.io)
+- [x] Helpjuice.com
+- [x] ReadmeIO (readme.io)
+- [x] ReadTheDocs
+
+### Support & Help Desk
+- [x] Deskpro
+- [x] Freshdesk (freshdesk.com)
+- [x] HelpScout (helpscoutdocs.com)
+- [x] Kayako
+- [x] LiveChat (ladesk.com)
+- [x] Zendesk
+- [x] Zoho (Desk, Wiki)
+
+### Status Pages
+- [x] Statuspage (statuspage.io)
+
+### Code Repositories & DevOps
+- [x] Atlassian
+- [x] Bitbucket (Users, Companies)
+- [x] DockerHub (Users, Search)
 - [x] GitHub (Users, Search, Pages)
 - [x] GitHub Gist (gist.github.com)
 - [x] GitLab (Users, Groups)
-- [x] Google Cloud Storage Buckets
 - [x] GrayhatWarfare (Open buckets/files)
-- [x] Greenhouse.io
-- [x] Helpjuice.com
 - [x] JIRA
-- [x] Kayako
-- [x] Lever (lever.co)
-- [x] Linode Object Storage
-- [x] LiveChat (ladesk.com)
 - [x] NPM (Registry, Users, Search)
-- [x] OVH Cloud Object Storage
 - [x] Postman (Users, Search)
-- [x] ReadTheDocs
-- [x] Recruitee
-- [x] Salesforce
-- [x] Scaleway Object Storage
-- [x] Slack
 - [x] SwaggerHub (Users, Query)
-- [x] Tilda (tilda.ws)
 - [x] TruffleSecurity (Forager)
-- [x] Vultr Object Storage
-- [x] Yandex Object Storage
 - [x] YouTrack
-- [x] Zendesk
-- [x] Zoho (Desk, Wiki)
+
+### HR & Recruiting
+- [x] Ashby
+- [x] BambooHR
+- [x] Breezy.hr
+- [x] Greenhouse.io
+- [x] Lever (lever.co)
+- [x] Recruitee
+
+### CRM & Sales
+- [x] Force.com (Salesforce)
+- [x] Salesforce
+
+### Communication & Collaboration
+- [x] 3CX
+- [x] GetOutline
+- [x] Slack
+
+### Blogs & Newsletters
+- [x] Substack (substack.com)
+- [x] Tumblr (tumblr.com)
+
+### E-commerce & Digital Products
+- [x] Gumroad (gumroad.com)
+
+### Online Courses
+- [x] Teachable (teachable.com)
+- [x] Thinkific (thinkific.com)
+
+### Cloud & Enterprise
+- [x] Azure (Cloud, Tenants)
 - [x] Testmo (testmo.net)
+
+### Other
+- [x] APK Aggregators (APKCombo)
 
 ## Contributing
 

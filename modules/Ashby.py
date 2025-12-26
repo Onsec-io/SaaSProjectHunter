@@ -8,12 +8,8 @@ def get_name():
     return 'Ashby'
 
 
-def get_version():
-    return '1.0'
-
-
 def get_tags():
-    return ['limit']
+    return ['limit', 'hr']
 
 
 def get_description():

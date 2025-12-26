@@ -8,10 +8,6 @@ def get_name():
     return 'DockerHubUsers'
 
 
-def get_version():
-    return '1.0'
-
-
 def get_tags():
     return ['limit']
 

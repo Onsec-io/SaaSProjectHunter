@@ -1,6 +1,5 @@
 import asyncio
 from utils import compile_url, async_requests
-import re
 import logger
 log = logger.get_logger('logger')
 
@@ -9,12 +8,8 @@ def get_name():
     return 'GrayhatWarfare'
 
 
-def get_version():
-    return '1.0'
-
-
 def get_tags():
-    return ['limit', 'backet']
+    return ['limit', 'bucket']
 
 
 def get_description():

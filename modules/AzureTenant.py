@@ -10,10 +10,6 @@ def get_name():
     return 'AzureTenant'
 
 
-def get_version():
-    return '1.1'
-
-
 def get_tags():
     return ['azure', 'tenant', 'openid', 'nolimit']
 

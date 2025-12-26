@@ -8,12 +8,8 @@ def get_name():
     return 'GhostIO'
 
 
-def get_version():
-    return '1.0'
-
-
 def get_tags():
-    return []
+    return ['subdomain', 'nolimit', 'blog']
 
 
 def get_description():

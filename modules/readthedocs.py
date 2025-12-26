@@ -8,12 +8,8 @@ def get_name():
     return 'ReadTheDocs'
 
 
-def get_version():
-    return '1.2'
-
-
 def get_tags():
-    return ['subdomain', 'nolimit']
+    return ['subdomain', 'nolimit', 'docs']
 
 
 def get_description():

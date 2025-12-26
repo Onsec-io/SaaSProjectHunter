@@ -9,10 +9,6 @@ def get_name():
     return 'GithubSearch'
 
 
-def get_version():
-    return '1.2'
-
-
 def get_tags():
     return ['limit']
 

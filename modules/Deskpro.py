@@ -8,12 +8,8 @@ def get_name():
     return 'Deskpro'
 
 
-def get_version():
-    return '1.2'
-
-
 def get_tags():
-    return ['subdomain', 'nolimit']
+    return ['subdomain', 'nolimit', 'support']
 
 
 def get_description():

@@ -8,12 +8,8 @@ def get_name():
     return 'Tilda'
 
 
-def get_version():
-    return '1.1'
-
-
 def get_tags():
-    return ['subdomain', 'nolimit']
+    return ['subdomain', 'nolimit', 'website']
 
 
 def get_description():
@@ -22,7 +18,7 @@ def get_description():
 
 def wordslist_for_check_module():
     return {
-        'real': ['blablablabla', 'fleur03', 'sgmwlsh'],
+        'real': ['alikakkk', 'eolay', 'app-app'],
         'fake': ['8457fj20d', 'uenrf348', '8rurur8ud']
     }
 

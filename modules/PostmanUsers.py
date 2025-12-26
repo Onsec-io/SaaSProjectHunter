@@ -1,5 +1,5 @@
 import asyncio
-from utils import compile_url, async_requests_over_datasets
+from utils import async_requests_over_datasets
 from uuid import uuid4
 from json import dumps
 import logger
@@ -8,10 +8,6 @@ log = logger.get_logger('logger')
 
 def get_name():
     return 'PostmanUsers'
-
-
-def get_version():
-    return '1.2'
 
 
 def get_tags():

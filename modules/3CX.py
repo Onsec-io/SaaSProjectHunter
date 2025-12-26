@@ -8,12 +8,8 @@ def get_name():
     return '3CX'
 
 
-def get_version():
-    return '1.0'
-
-
 def get_tags():
-    return ['subdomain', 'nolimit']
+    return ['dns', 'nolimit', 'voip']
 
 
 def get_description():

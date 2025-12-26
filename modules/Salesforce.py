@@ -8,12 +8,8 @@ def get_name():
     return 'Salesforce'
 
 
-def get_version():
-    return '1.0'
-
-
 def get_tags():
-    return ['dns', 'subdomain', 'nolimit']
+    return ['dns', 'nolimit', 'crm']
 
 
 def get_description():

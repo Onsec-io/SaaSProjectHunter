@@ -9,10 +9,6 @@ def get_name():
     return 'TruffleSecurity'
 
 
-def get_version():
-    return '1.0'
-
-
 def get_tags():
     return ['limit']
 

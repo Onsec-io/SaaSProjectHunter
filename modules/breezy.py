@@ -8,12 +8,8 @@ def get_name():
     return 'breezy'
 
 
-def get_version():
-    return '1.0'
-
-
 def get_tags():
-    return ['subdomain', 'hr']
+    return ['subdomain', 'nolimit', 'hr']
 
 
 def get_description():

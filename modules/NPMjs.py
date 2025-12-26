@@ -8,10 +8,6 @@ def get_name():
     return 'NPMjs'
 
 
-def get_version():
-    return '2.0'
-
-
 def get_tags():
     return ['limit']
 

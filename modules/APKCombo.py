@@ -8,10 +8,6 @@ def get_name():
     return 'APKCombo'
 
 
-def get_version():
-    return '1.3'
-
-
 def get_tags():
     return ['limit']
 

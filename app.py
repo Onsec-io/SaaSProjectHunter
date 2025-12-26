@@ -63,7 +63,7 @@ def main():
         modules = load_modules()
         print('List of available modules ({}):'.format(len(modules)))
         for m in modules:
-            print(' - {} {} (tags: {}): {}'.format(m.get_name(), m.get_version(), ', '.join(m.get_tags()), m.get_description()))
+            print(' - {} (tags: {}): {}'.format(m.get_name(), ', '.join(m.get_tags()), m.get_description()))
         exit()
 
     if args.check:

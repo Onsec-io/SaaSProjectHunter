@@ -1,5 +1,5 @@
 import asyncio
-from utils import compile_url, async_requests_over_datasets
+from utils import async_requests_over_datasets
 from uuid import uuid4
 from json import dumps
 import logger
@@ -9,10 +9,6 @@ import re
 
 def get_name():
     return 'PostmanSearch'
-
-
-def get_version():
-    return '1.3'
 
 
 def get_tags():

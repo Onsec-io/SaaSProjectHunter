@@ -8,12 +8,8 @@ def get_name():
     return 'YouTrack'
 
 
-def get_version():
-    return '1.3'
-
-
 def get_tags():
-    return ['subdomain', 'nolimit']
+    return ['subdomain', 'nolimit', 'devtools']
 
 
 def get_description():

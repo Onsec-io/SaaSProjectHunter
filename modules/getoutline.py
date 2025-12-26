@@ -8,12 +8,8 @@ def get_name():
     return 'GetOutline'
 
 
-def get_version():
-    return '1.1'
-
-
 def get_tags():
-    return ['limit']
+    return ['limit', 'docs']
 
 
 def get_description():

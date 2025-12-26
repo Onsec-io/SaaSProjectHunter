@@ -8,12 +8,8 @@ def get_name():
     return 'Lever'
 
 
-def get_version():
-    return '1.0'
-
-
 def get_tags():
-    return ['hr']
+    return ['nolimit', 'hr']
 
 
 def get_description():

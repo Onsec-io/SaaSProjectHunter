@@ -8,10 +8,6 @@ def get_name():
     return 'AzureStorage'
 
 
-def get_version():
-    return '1.1'
-
-
 def get_tags():
     return ['dns', 'subdomain', 'nolimit']
 

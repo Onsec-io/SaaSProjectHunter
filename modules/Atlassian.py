@@ -8,12 +8,8 @@ def get_name():
     return 'Atlassian'
 
 
-def get_version():
-    return '1.1'
-
-
 def get_tags():
-    return ['subdomain', 'limit']
+    return ['subdomain', 'limit', 'collaboration']
 
 
 def get_description():

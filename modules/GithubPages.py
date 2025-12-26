@@ -8,12 +8,8 @@ def get_name():
     return 'GithubPages'
 
 
-def get_version():
-    return '1.0'
-
-
 def get_tags():
-    return ['subdomain', 'nolimit']
+    return ['subdomain', 'nolimit', 'hosting']
 
 
 def get_description():

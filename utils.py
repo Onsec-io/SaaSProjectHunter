@@ -380,7 +380,7 @@ def compile_url(url, paths, proto='https://'):
 
 
 def run_check_module(module):
-    print('Check {} v{}'.format(module.get_name(), module.get_version()))
+    print('Check {}'.format(module.get_name()))
     data = module.wordslist_for_check_module()
     count = 0
     log.debug('>> Test set: {}'.format(data))
@@ -416,9 +416,8 @@ def run_check_module(module):
 
     if count == 2:
         pass
-        # print('Check {} v{} complete, problem not found'.format(module.get_name(), module.get_version()))
     else:
-        log.error('Failed check module {} v{}!'.format(module.get_name(), module.get_version()))
+        log.error('Failed check module {}!'.format(module.get_name()))
 
 
 async def async_websocket(url, messages=[]):

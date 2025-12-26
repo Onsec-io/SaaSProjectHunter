@@ -1,6 +1,4 @@
 import asyncio
-import random
-import re
 from utils import async_requests, compile_subdomain
 import logger
 log = logger.get_logger('logger')
@@ -10,12 +8,8 @@ def get_name():
     return 'ScalewayS3'
 
 
-def get_version():
-    return '1.0'
-
-
 def get_tags():
-    return ['subdomain', 'nolimit']
+    return ['s3', 'bucket', 'subdomain', 'nolimit']
 
 
 def get_description():

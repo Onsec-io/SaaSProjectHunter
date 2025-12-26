@@ -8,12 +8,8 @@ def get_name():
     return 'Helpjuice'
 
 
-def get_version():
-    return '1.0'
-
-
 def get_tags():
-    return ['subdomain']
+    return ['subdomain', 'nolimit', 'docs']
 
 
 def get_description():

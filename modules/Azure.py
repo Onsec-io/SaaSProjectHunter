@@ -8,10 +8,6 @@ def get_name():
     return 'Azure'
 
 
-def get_version():
-    return '1.3'
-
-
 def get_tags():
     return ['dns', 'subdomain', 'nolimit']
 
