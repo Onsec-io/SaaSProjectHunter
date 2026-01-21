@@ -18,7 +18,7 @@ def get_description():
 
 def wordslist_for_check_module():
     return {
-        'real': ['keyword-research', 'jartec', '911-assets'],
+        'real': ['licinpunya', 'jartec', '911-assets'],
         'fake': ['8457fj20d', 'uenrf348', '8rurur8ud']
     }
 
@@ -41,6 +41,7 @@ def run(words):
         'tor1.digitaloceanspaces.com',
         'blr1.digitaloceanspaces.com',
         'syd1.digitaloceanspaces.com',
+        'atl1.digitaloceanspaces.com',
     ]
 
     urls = []
