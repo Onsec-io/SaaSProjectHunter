@@ -37,14 +37,14 @@ def run(words):
         # 302 redirects need to be followed and checked (e.g., onsec-io -> onsecio -> 404)
         if r.status_code == 302 and 'location' in r.headers:
             redirect_urls.append(r.headers['location'])
-        elif r.status_code != 404:
+        elif r.status_code != 404 and r.url.host != 'substack.com':
             founded_projects.append('https://{}/'.format(r.url.host))
     # Follow redirects and verify they don't lead to 404
     if redirect_urls:
         log.debug('Following {} redirects...'.format(len(redirect_urls)))
         redirect_responses = loop.run_until_complete(async_requests(redirect_urls))
         for r in redirect_responses:
-            if r.status_code != 404:
+            if r.status_code != 404 and r.url.host != 'substack.com':
                 founded_projects.append('https://{}/'.format(r.url.host))
     log.info('{}: founded {} newsletters'.format(get_name(), len(founded_projects)))
     return founded_projects

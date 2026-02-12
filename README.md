@@ -23,7 +23,7 @@ python3 app.py --help
 
 SaaSProjectHunter (developed by ONSEC.io)
 
-usage: app.py [-h] [-g [GENERATOR ...]] [-m MODULE] [-x [EXCLUDE ...]] [-t THREADS] [-u USER_AGENT] [-a AUTO_RESEND] [-v] [-nc] [-p POSTFIX] [--tld TLD] [--limit LIMIT] [--proxies PROXIES] [--tag TAG] [-l | -c] [-w WORDLIST | -s STRINGS [STRINGS ...]]
+usage: app.py [-h] [-g [GENERATOR ...]] [-m MODULE] [-x [EXCLUDE ...]] [-t THREADS] [-u USER_AGENT] [-a AUTO_RESEND] [-v] [-nc] [-p POSTFIX] [--tld TLD] [--limit LIMIT] [--proxies PROXIES] [--tag TAG] [--no-concurrent] [--workers WORKERS] [-l | -c] [-w WORDLIST | -s STRINGS [STRINGS ...]]
 
 Example usage: python3 app.py -s google logstash octocat -v
 
@@ -40,7 +40,7 @@ options:
   -u USER_AGENT, --user-agent USER_AGENT
                         Set the User-Agent string for HTTP requests.
   -a AUTO_RESEND, --auto-resend AUTO_RESEND
-                        Automatically resend requests after N second.
+                        Automatically resend failed requests after N seconds. Default: 15. Set to 0 to disable.
   -v, --verbose         Increase output verbosity (e.g., -v for verbose, -vv for more verbose).
   -nc, --no-color       Disable colored output.
   -p POSTFIX, --postfix POSTFIX
@@ -49,6 +49,8 @@ options:
   --limit LIMIT         Set the maximum number of requests per module.
   --proxies PROXIES     Specify the file path for HTTP/SOCKS proxies.
   --tag TAG             Specify the tag for run only specific modules.
+  --no-concurrent       Disable parallel execution (run modules sequentially).
+  --workers WORKERS     Max concurrent workers for parallel execution (default: auto).
   -l, --list            Display a list of available modules and exit.
   -c, --check           Execute module checks and exit.
   -w WORDLIST, --wordlist WORDLIST
@@ -81,6 +83,23 @@ python app.py -s google.com -g
 ```
 
 To gain a better understanding of the tool's workings, you can run the tool with the `-v` (`--verbose`) parameter. Running with the `-vv` parameter is only recommended for debugging purposes. A full list of available parameters can be accessed by calling the help using the `-h` (`--help`) option.
+
+### Concurrent execution
+
+By default, modules targeting **different services** run in parallel using threads, while modules sharing the same rate-limited service (e.g. GithubSearch + GithubUsers + GithubGist) run sequentially within their group. This reduces total scan time from minutes to seconds.
+
+```bash
+# Default: concurrent execution with auto-detected worker count
+python app.py -s google logstash octocat
+
+# Limit to 5 concurrent workers
+python app.py -s google logstash --workers 5
+
+# Disable concurrent execution (sequential mode, same as legacy behavior)
+python app.py -s google logstash --no-concurrent
+```
+
+Rate-limited modules (`limit` tag) automatically use reduced concurrency and a 0.3s inter-request delay to avoid 429 errors. DNS modules (`dns` tag) use higher concurrency. Use `--auto-resend N` for automatic retry in concurrent mode.
 
 ### An example of the program's output
 
@@ -278,6 +297,15 @@ Zoho             https://google.zohodesk.com/
 
 ### Other
 - [x] APK Aggregators (APKCombo)
+
+## Testing
+
+Run the test suite with pytest:
+
+```bash
+pip install pytest pytest-asyncio
+python3 -m pytest tests/ -v
+```
 
 ## Contributing
 

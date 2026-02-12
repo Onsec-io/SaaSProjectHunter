@@ -7,23 +7,73 @@ from tqdm.asyncio import tqdm_asyncio
 import re
 import logger
 import signal
+import threading
+
+
 log = logger.get_logger('logger')
-global limit
-global header_useragent
-global verbose
-global limit_requests
-global proxies
-global tlds
-global auto_resend
-global auto_resend_counter
+verbose = 0
+header_useragent = {}
+limit_requests = 100000
+proxies = None
+tlds = ['com', 'net', 'org', 'io', 'dev', 'tech', 'xyz', 'top', 'app', 'online']
+auto_resend = None
+
+_thread_local = threading.local()
+_default_threads = 4
+_concurrent_mode = False
+
+
+def _get_semaphore():
+    """Get thread-local semaphore, creating if needed."""
+    if not hasattr(_thread_local, 'semaphore'):
+        _thread_local.semaphore = asyncio.Semaphore(value=int(_default_threads))
+    return _thread_local.semaphore
+
+
+def set_rate_tier(tier):
+    """Set rate tier for current thread's semaphore."""
+    if tier == 'limit':
+        val = max(2, _default_threads // 4)
+    elif tier == 'dns':
+        val = _default_threads * 2
+    else:
+        val = _default_threads
+    _thread_local.semaphore = asyncio.Semaphore(value=int(val))
+
+
+def set_request_delay(seconds):
+    """Set inter-request delay for current thread."""
+    _thread_local.request_delay = seconds
+
+
+def _get_request_delay():
+    return getattr(_thread_local, 'request_delay', 0)
+
+
+def reset_auto_resend_counter():
+    _thread_local.auto_resend_counter = 0
+
+
+def _get_auto_resend_counter():
+    return getattr(_thread_local, 'auto_resend_counter', 0)
+
+
+def _increment_auto_resend_counter():
+    _thread_local.auto_resend_counter = _get_auto_resend_counter() + 1
+
+
+def set_concurrent_mode(enabled):
+    global _concurrent_mode
+    _concurrent_mode = enabled
 
 
 def init(args_verbose, args_threads, args_user_agent, args_limit_requests, args_proxies=None, args_tld=None, args_auto_resend=None):
     global verbose
     verbose = args_verbose
 
-    global limit
-    limit = asyncio.Semaphore(value=int(args_threads))
+    global _default_threads
+    _default_threads = int(args_threads)
+    _thread_local.semaphore = asyncio.Semaphore(value=_default_threads)
 
     global header_useragent
     header_useragent = {'user-agent': args_user_agent}
@@ -52,6 +102,7 @@ def init(args_verbose, args_threads, args_user_agent, args_limit_requests, args_
 
     global auto_resend
     auto_resend = args_auto_resend
+    reset_auto_resend_counter()
 
 
 def get_proxy(num=None):
@@ -113,6 +164,9 @@ def check_all_proxies_sync():
 
 
 def wait_user_input():
+    if _concurrent_mode:
+        log.warning('Skipping user prompt in concurrent mode. Use --auto-resend N for retry.')
+        return 'pass'
     while True:
         answer = input("\nPress 'r' to repeat requests, 'p' to pass current module or 'q' to quit: ")
         if answer == 'r':
@@ -141,8 +195,12 @@ def generator(words):
 
 async def make_nslookup(resolver, domain):
     try:
-        async with limit:
-            if limit.locked():
+        delay = _get_request_delay()
+        if delay > 0:
+            await asyncio.sleep(delay)
+        sem = _get_semaphore()
+        async with sem:
+            if sem.locked():
                 await asyncio.sleep(0.1)
             log.debug('Run lookup: {}'.format(domain))
             log.debug('Run resolve domain: {}'.format(domain))
@@ -173,9 +231,10 @@ async def async_nslookup(domains):
             for current_task in tasks:
                 current_task.cancel()
 
-    signal.signal(signal.SIGINT, signal_handler)
+    if threading.current_thread() is threading.main_thread():
+        signal.signal(signal.SIGINT, signal_handler)
 
-    if verbose > 0:
+    if verbose > 0 or _concurrent_mode:
         responses = await asyncio.gather(*tasks)  # return None and response
     else:
         responses = await tqdm_asyncio.gather(*tasks, leave=False)  # return None and response
@@ -184,10 +243,13 @@ async def async_nslookup(domains):
 
 async def make_request(client, url, method, uuid=None, data=None, headers=None, cookies=None):
     try:
-        async with limit:
-            response = []
-            response.insert(0, uuid)
-            if limit.locked():
+        delay = _get_request_delay()
+        if delay > 0:
+            await asyncio.sleep(delay)
+        sem = _get_semaphore()
+        async with sem:
+            response = [uuid]
+            if sem.locked():
                 await asyncio.sleep(0.1)
             if data:
                 log.debug('Run request to: {} ({})'.format(url, data))
@@ -229,7 +291,6 @@ async def perform_request(client, url, method, data, headers, cookies):
 
 
 async def async_requests(urls, method='head', http2=True, additional_headers=None):
-    global auto_resend_counter
     if additional_headers:
         headers = {**header_useragent, **additional_headers}  # merge two dict: useragent and additional headers
     else:
@@ -250,9 +311,10 @@ async def async_requests(urls, method='head', http2=True, additional_headers=Non
             for current_task in tasks:
                 current_task.cancel()
 
-    signal.signal(signal.SIGINT, signal_handler)
+    if threading.current_thread() is threading.main_thread():
+        signal.signal(signal.SIGINT, signal_handler)
 
-    if verbose > 0:
+    if verbose > 0 or _concurrent_mode:
         responses = await asyncio.gather(*tasks)  # return None and response
     else:
         responses = await tqdm_asyncio.gather(*tasks, leave=False)  # return None and response
@@ -269,8 +331,8 @@ async def async_requests(urls, method='head', http2=True, additional_headers=Non
 
     if len(recheck) > 0:
         if auto_resend:
-            auto_resend_counter += 1
-            if auto_resend_counter > 5:
+            _increment_auto_resend_counter()
+            if _get_auto_resend_counter() > 5:
                 log.error('Too many auto-resend attempts. Exit...')
                 return completed_responses
             print(f"Auto-resend enabled. Resending requests after {auto_resend}s...")
@@ -284,7 +346,6 @@ async def async_requests(urls, method='head', http2=True, additional_headers=Non
 
 
 async def async_requests_over_datasets(datasets, http2=True):
-    global auto_resend_counter
     tasks = []
     # example `dataset`: {'UNIQUE-UUID': {'url': 'https://<company>.example.com/<project>', 'method': 'post', 'cookies': "{'key': 'value'}"}}
     method = 'head'
@@ -325,9 +386,10 @@ async def async_requests_over_datasets(datasets, http2=True):
             for current_task in tasks:
                 current_task.cancel()
 
-    signal.signal(signal.SIGINT, signal_handler)
+    if threading.current_thread() is threading.main_thread():
+        signal.signal(signal.SIGINT, signal_handler)
 
-    if verbose > 0:
+    if verbose > 0 or _concurrent_mode:
         responses = await asyncio.gather(*tasks)  # return None and response
     else:
         responses = await tqdm_asyncio.gather(*tasks, leave=False)  # return None and response
@@ -340,8 +402,8 @@ async def async_requests_over_datasets(datasets, http2=True):
 
     if len(recheck) > 0:
         if auto_resend:
-            auto_resend_counter += 1
-            if auto_resend_counter > 5:
+            _increment_auto_resend_counter()
+            if _get_auto_resend_counter() > 5:
                 log.error('Too many auto-resend attempts. Exit...')
                 return completed_responses
             print(f"Auto-resend enabled. Resending requests after {auto_resend}s...")
@@ -415,32 +477,25 @@ def run_check_module(module):
         log.warning('Test {} failed. Found only {} out of {} projects: {}'.format(module.get_name(), len(result), len(real_projects), [x for x in result]))
 
     if count == 2:
-        pass
+        return True
     else:
         log.error('Failed check module {}!'.format(module.get_name()))
-
-
-async def async_websocket(url, messages=[]):
-    import httpx
-    from httpx_ws import aconnect_ws
-    responses = []
-    log.info('Connect to websocket: {}'.format(url))
-    async with httpx.AsyncClient(timeout=5.0) as client:
-        async with aconnect_ws(url, client) as ws:
-            status = await ws.receive_text()
-            log.debug(status)
-            if len(messages) == 0:
-                return status
-            for m in messages:
-                await ws.send_text(m)
-                responses.append(await ws.receive_text())
-    log.debug(responses)
-    log.debug('Websocket closed')
-    return responses
+        return False
 
 
 def check_modules(modules):
+    failed = []
     for m in modules:
-        global auto_resend_counter
-        auto_resend_counter = 0
-        run_check_module(m)
+        reset_auto_resend_counter()
+        if not run_check_module(m):
+            failed.append(m.get_name())
+    _print_check_summary(len(modules), failed)
+
+
+def _print_check_summary(total, failed):
+    passed = total - len(failed)
+    print('\n--- Check summary: {}/{} passed ---'.format(passed, total))
+    if failed:
+        print('Failed modules ({}):'.format(len(failed)))
+        for name in sorted(failed):
+            print('  - {}'.format(name))

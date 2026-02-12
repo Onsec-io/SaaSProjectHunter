@@ -28,6 +28,7 @@ def run(words):
     founded_projects = []
     log.debug('Checking the wordlist for requirements of {} module...'.format(get_name()))
     words = [item.lower() for item in words]  # lowercase
+    words = [w for w in words if re.match(r'^[a-z0-9.-]+$', w)]  # valid hostnames only
     params = ['/api/v1/public/secrets/domain?domain={}&page_size=1&page=0'.format(word) for word in words]
     urls = compile_url('forager.trufflesecurity.com', params)
     log.debug('Compiled {} urls for request ({})'.format(len(urls), get_name()))

@@ -4,6 +4,7 @@ import importlib
 import logger
 from tabulate import tabulate
 import utils
+import scheduler
 
 
 def load_wordlist(path_to_file):
@@ -70,8 +71,12 @@ def main():
         if args.proxies:
             utils.check_all_proxies_sync()
         log.info('Check modules...')
+        modules = load_modules(args.module, args.tag)
         try:
-            utils.check_modules(load_modules(args.module, args.tag))
+            if args.no_concurrent or len(modules) == 1:
+                utils.check_modules(modules)
+            else:
+                scheduler.check_concurrent(modules, max_workers=args.workers)
             print('Check completed')
         except KeyboardInterrupt:
             print('Check stopped by user')
@@ -117,11 +122,16 @@ def main():
     log.info('Number of loaded modules: {}'.format(len(modules)))
 
     output = []
-    for module in modules:
-        utils.auto_resend_counter = 0
-        print('Run {}'.format(module.get_name()))
-        for url in module.run(words):
-            output.append([module.get_name(), url])
+    if args.no_concurrent or len(modules) == 1:
+        for module in modules:
+            utils.reset_auto_resend_counter()
+            print('Run {}'.format(module.get_name()))
+            for url in module.run(words):
+                output.append([module.get_name(), url])
+    else:
+        results = scheduler.run_concurrent(modules, words, max_workers=args.workers)
+        for name, url in results:
+            output.append([name, url])
     print(tabulate(output))
     print('Found {} results'.format(len(output)))
 
@@ -134,7 +144,7 @@ parser.add_argument('-m', '--module', action='store', type=str, default=False, h
 parser.add_argument('-x', '--exclude', nargs='*', help='Specify the module names to exclude from the run.')
 parser.add_argument('-t', '--threads', default=int(os.cpu_count()) * 2, type=int, help='Set the number of concurrent threads. Defaults to twice the number of CPU cores.')
 parser.add_argument('-u', '--user-agent', default='Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/118.0', help='Set the User-Agent string for HTTP requests.')
-parser.add_argument('-a', '--auto-resend', type=int, default=None, help='Automatically resend requests after N second.')
+parser.add_argument('-a', '--auto-resend', type=int, default=15, help='Automatically resend failed requests after N seconds. Default: 15. Set to 0 to disable.')
 parser.add_argument('-v', '--verbose', default=0, action='count', help='Increase output verbosity (e.g., -v for verbose, -vv for more verbose).')
 parser.add_argument('-nc', '--no-color', action='store_true', default=False, help='Disable colored output.')
 parser.add_argument('-p', '--postfix', help='Specify the file path for postfixes.')
@@ -142,6 +152,8 @@ parser.add_argument('--tld', default=None, help='Add regional/country/specific t
 parser.add_argument('--limit', default=100000, type=int, help='Set the maximum number of requests per module.')
 parser.add_argument('--proxies', default=None, help='Specify the file path for HTTP/SOCKS proxies.')
 parser.add_argument('--tag', default=None, help='Specify the tag for run only specific modules.')
+parser.add_argument('--no-concurrent', action='store_true', default=False, help='Disable parallel execution (run modules sequentially).')
+parser.add_argument('--workers', default=None, type=int, help='Max concurrent workers for parallel execution (default: auto).')
 
 group = parser.add_mutually_exclusive_group()
 group.add_argument('-l', '--list', action='store_true', default=False, help='Display a list of available modules and exit.')
