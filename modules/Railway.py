@@ -18,7 +18,7 @@ def get_description():
 
 def wordslist_for_check_module():
     return {
-        'real': ['dopetox', 'brilliants', 'lifeos'],
+        'real': ['plausible', 'brilliants', 'lifeos'],
         'fake': ['8457fj20d', 'uenrf348', '8rurur8ud']
     }
 
