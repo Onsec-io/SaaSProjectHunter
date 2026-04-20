@@ -233,7 +233,6 @@ Zoho             https://google.zohodesk.com/
 - [x] Canny (canny.io)
 - [x] GitBook (gitbook.io)
 - [x] Helpjuice.com
-- [x] ReadmeIO (readme.io)
 - [x] ReadTheDocs
 
 ### Support & Help Desk
@@ -289,7 +288,6 @@ Zoho             https://google.zohodesk.com/
 
 ### Online Courses
 - [x] Teachable (teachable.com)
-- [x] Thinkific (thinkific.com)
 
 ### Cloud & Enterprise
 - [x] Azure (Cloud, Tenants)
