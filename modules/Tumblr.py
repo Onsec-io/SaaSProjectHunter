@@ -9,7 +9,7 @@ def get_name():
 
 
 def get_tags():
-    return ['subdomain', 'nolimit', 'blog']
+    return ['subdomain', 'limit', 'blog']
 
 
 def get_description():

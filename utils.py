@@ -15,6 +15,7 @@ verbose = 0
 header_useragent = {}
 limit_requests = 100000
 proxies = None
+_PROXY_SCHEMES = ('http://', 'https://', 'socks://', 'socks4://', 'socks5://', 'socks5h://')
 tlds = ['com', 'net', 'org', 'io', 'dev', 'tech', 'xyz', 'top', 'app', 'online']
 auto_resend = None
 
@@ -87,7 +88,7 @@ def init(args_verbose, args_threads, args_user_agent, args_limit_requests, args_
         for p in args_proxies:
             if p.startswith('#'):
                 continue
-            if not p.startswith('http://') and not p.startswith('https://') and not p.startswith('socks://'):
+            if not p.startswith(_PROXY_SCHEMES):
                 log.error('Invalid proxy: {}'.format(p))
         log.info('Number of proxies loaded: {}'.format(len(args_proxies)))
     proxies = args_proxies
@@ -113,7 +114,7 @@ def get_proxy(num=None):
     else:
         proxy_str = random.choice(proxies)
 
-    if proxy_str.startswith('http://') or proxy_str.startswith('https://') or proxy_str.startswith('socks://'):
+    if proxy_str.startswith(_PROXY_SCHEMES):
         log.debug('Used proxy: {}'.format(proxy_str))
         return proxy_str
     else:

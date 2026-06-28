@@ -18,7 +18,7 @@ def get_description():
 
 def wordslist_for_check_module():
     return {
-        'real': ['triangle2019', 'micromasters', 'beekman'],
+        'real': ['fieldmag', 'nucnet', 'eduguidegr'],
         'fake': ['8457fj20d', 'uenrf348', '8rurur8ud']
     }
 
