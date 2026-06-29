@@ -192,7 +192,7 @@ Zoho             https://google.zohodesk.com/
 ---------------  --------------------------------------------------
 ```
 
-## List of modules (81 total)
+## List of modules (87 total)
 
 ### Cloud Storage
 - [x] Alibaba Cloud Object Storage
@@ -288,6 +288,13 @@ Zoho             https://google.zohodesk.com/
 
 ### Online Courses
 - [x] Teachable (teachable.com)
+
+### Identity & SSO
+- [x] Auth0 (auth0.com OIDC tenants)
+- [x] Cloudflare Access (Zero Trust teams)
+- [x] Frontegg (frontegg.com tenants)
+- [x] Kinde (kinde.com businesses)
+- [x] Okta (okta.com SSO tenants)
 
 ### Cloud & Enterprise
 - [x] Azure (Cloud, Tenants)
