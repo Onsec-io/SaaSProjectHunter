@@ -32,9 +32,11 @@ def run(words):
     responses = loop.run_until_complete(async_requests(domains, method='HEAD'))
     founded_projects = []
     for r in responses:
-            if r.status_code == 403:
-                log.error('Your IP has been blocked: response code {} for {}'.format(r.status_code, r.url))
-            elif r.status_code != 302:
-                 founded_projects.append(r.url.host)
+        # Real career portals return 200. Non-existent company slugs return 404.
+        # (The previous != 302 check treated 404 as a hit, so every fake passed.)
+        if r.status_code == 403:
+            log.error('Your IP has been blocked: response code {} for {}'.format(r.status_code, r.url))
+        elif r.status_code == 200:
+            founded_projects.append(r.url.host)
     log.info('{}: founded {} sites'.format(get_name(), len(founded_projects)))
     return founded_projects

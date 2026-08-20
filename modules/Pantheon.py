@@ -18,7 +18,7 @@ def get_description():
 
 def wordslist_for_check_module():
     return {
-        'real': ['live-composers', 'live-boatwrx', 'dev-otpdemosite'],
+        'real': ['live-composers', 'live-pantheon', 'dev-otpdemosite'],
         'fake': ['8457fj20d', 'uenrf348', '8rurur8ud']
     }
 
